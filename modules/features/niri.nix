@@ -27,10 +27,7 @@
         xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
         input.keyboard.xkb.layout = "us,ua";
         layout.gaps = 5;
-        layout.focus-ring.on = null;
-        layout.focus-ring.width = 3;
-        layout.focus-ring.active-color = "#8aadf4";
-        layout.focus-ring.inactive-color = "#494d64";
+        layout.focus-ring.off = null;
 
         binds = {
           # --- Your custom binds ---
