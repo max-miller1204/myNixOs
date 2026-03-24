@@ -6,6 +6,7 @@
     [ # Include the results of the hardware scan.
       self.nixosModules.myMachineHardware
       self.nixosModules.niri
+      self.nixosModules.homeManager
     ];
 
     # flakes
@@ -93,6 +94,10 @@
 
     # Install firefox.
     programs.firefox.enable = true;
+
+    # Enable askpass so sudo works from non-terminal contexts (e.g. Claude Code)
+    programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
+    environment.sessionVariables.SUDO_ASKPASS = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
