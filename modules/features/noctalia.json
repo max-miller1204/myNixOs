@@ -4,7 +4,7 @@
     "bar": {
       "barType": "simple",
       "position": "left",
-      "monitors": [],
+      "monitors": ["eDP-1"],
       "density": "default",
       "showOutline": false,
       "showCapsule": true,
@@ -159,15 +159,6 @@
             "iconColor": "none",
             "id": "Brightness",
             "textColor": "none"
-          },
-          {
-            "colorizeDistroLogo": false,
-            "colorizeSystemIcon": "none",
-            "customIconPath": "",
-            "enableColorization": false,
-            "icon": "noctalia",
-            "id": "ControlCenter",
-            "useDistroLogo": false
           }
         ]
       },
@@ -260,10 +251,10 @@
       "settingsPanelSideBarCardStyle": false
     },
     "location": {
-      "name": "Tokyo",
+      "name": "Blacksburg",
       "weatherEnabled": true,
       "weatherShowEffects": true,
-      "useFahrenheit": false,
+      "useFahrenheit": true,
       "use12hourFormat": false,
       "showWeekNumberInCalendar": false,
       "showCalendarEvents": true,
@@ -673,7 +664,10 @@
     "barVisible": true,
     "openedPanel": "",
     "lockScreenActive": false,
-    "wallpapers": {},
+    "wallpapers": {
+      "eDP-1": "/home/max/Pictures/Wallpapers/yz6ggt7m18l41.png",
+      "DP-3": "/home/max/Pictures/Wallpapers/yz6ggt7m18l41.png"
+    },
     "desktopWidgetsEditMode": false,
     "display": {
       "eDP-1": {

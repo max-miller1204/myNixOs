@@ -1,13 +1,23 @@
 { self, inputs, ... }: {
 
   flake.nixosModules.myMachineConfiguration = { config, pkgs, ... }: {
-    nixpkgs.overlays = [ inputs.claude-code.overlays.default ];
+    nixpkgs.overlays = [
+      inputs.claude-code.overlays.default
+      inputs.codex.overlays.default
+    ];
   imports =
     [ # Include the results of the hardware scan.
       self.nixosModules.myMachineHardware
+      self.nixosModules.context7Secret
       self.nixosModules.niri
       self.nixosModules.homeManager
     ];
+
+    # Symlink bwrap to /usr/bin so Codex can find it
+    system.activationScripts.bwrap = ''
+      mkdir -p /usr/bin
+      ln -sf ${pkgs.bubblewrap}/bin/bwrap /usr/bin/bwrap
+    '';
 
     # flakes
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -107,6 +117,8 @@
     environment.systemPackages = with pkgs; [
       vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       claude-code
+      codex
+      bubblewrap
       alacritty
       gh
       brightnessctl
@@ -142,4 +154,3 @@
     system.stateVersion = "25.11"; # Did you read the comment?
   };
 }
-

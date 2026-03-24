@@ -6,6 +6,10 @@
     import-tree.url = "github:vic/import-tree";
 
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -13,6 +17,7 @@
     };
 
     claude-code.url = "github:sadjow/claude-code-nix";
+    codex.url = "github:sadjow/codex-cli-nix";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake 

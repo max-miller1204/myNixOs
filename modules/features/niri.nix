@@ -14,10 +14,23 @@
           (lib.getExe self'.packages.myNoctalia)
         ];
 
+        # Monitor layout: external (right of internal) is primary
+        outputs."eDP-1" = {
+          position._attrs = { x = 0; y = 0; };
+        };
+        # External monitor (to the right of built-in)
+        outputs."DP-3" = {
+          focus-at-startup = null;
+          position._attrs = { x = 1755; y = 0; };  # after eDP-1 logical width at 1.75 scale
+        };
+
         xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
         input.keyboard.xkb.layout = "us,ua";
         layout.gaps = 5;
-        layout.focus-ring.off = null;
+        layout.focus-ring.on = null;
+        layout.focus-ring.width = 3;
+        layout.focus-ring.active-color = "#8aadf4";
+        layout.focus-ring.inactive-color = "#494d64";
 
         binds = {
           # --- Your custom binds ---

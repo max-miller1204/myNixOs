@@ -49,3 +49,5 @@ Each doc in this folder explains one concept in depth. Read them in order:
 6. `06-wrapper-modules.md` — how wrapper-modules builds typed program configs
 7. `07-adding-a-machine.md` — recipe: add a second machine
 8. `08-adding-a-feature.md` — recipe: add a new feature module
+9. `09-claude-code-mcp.md` — recipe: add an MCP server to Claude Code
+10. `09-context7-secrets.md` — recipe: manage secrets with sops-nix (API keys, tokens, etc.)
