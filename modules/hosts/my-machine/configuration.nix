@@ -143,6 +143,7 @@
       gh
       brightnessctl
       jq
+      rg
       tree
       vscode
     ];
