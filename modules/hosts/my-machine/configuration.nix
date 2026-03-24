@@ -12,7 +12,19 @@
       self.nixosModules.youtubeSecret
       self.nixosModules.niri
       self.nixosModules.homeManager
+      self.nixosModules.alacritty
+      self.nixosModules.git
+      self.nixosModules.vim
     ];
+
+    # Enable feature modules
+    features.niri.enable = true;
+    features.homeManager.enable = true;
+    features.context7Secret.enable = true;
+    features.youtubeSecret.enable = true;
+    features.alacritty.enable = true;
+    features.git.enable = true;
+    features.vim.enable = true;
 
     # Symlink bwrap to /usr/bin so Codex can find it
     system.activationScripts.bwrap = ''
@@ -22,6 +34,14 @@
 
     # flakes
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+    # Automatic garbage collection and store optimization
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+    nix.settings.auto-optimise-store = true;
 
     # Bootloader.
     boot.loader.systemd-boot.enable = true;
@@ -116,16 +136,13 @@
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment.systemPackages = with pkgs; [
-      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       claude-code
       codex
       nodejs
       bubblewrap
-      alacritty
       gh
       brightnessctl
       jq
-      git
       tree
       vscode
     ];

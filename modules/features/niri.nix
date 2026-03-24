@@ -1,8 +1,12 @@
 { self, inputs, ... }: {
-  flake.nixosModules.niri = { pkgs, lib, ... }: {
-    programs.niri = {
-      enable = true;
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
+  flake.nixosModules.niri = { pkgs, lib, config, ... }: {
+    options.features.niri.enable = lib.mkEnableOption "Niri compositor with custom config";
+
+    config = lib.mkIf config.features.niri.enable {
+      programs.niri = {
+        enable = true;
+        package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
+      };
     };
   };
 
@@ -31,7 +35,7 @@
 
         binds = {
           # --- Your custom binds ---
-          "Mod+Return".spawn-sh = lib.getExe pkgs.alacritty;
+          "Mod+Return".spawn-sh = lib.getExe self'.packages.myAlacritty;
           "Mod+Space".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
 
           # --- Default niri binds ---

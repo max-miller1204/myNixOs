@@ -1,6 +1,10 @@
 { self, inputs, ... }: {
-  flake.nixosModules.homeManager = { pkgs, ... }: {
+  flake.nixosModules.homeManager = { pkgs, lib, config, ... }: {
+    options.features.homeManager.enable = lib.mkEnableOption "Home Manager for user max";
+
     imports = [ inputs.home-manager.nixosModules.home-manager ];
+
+    config = lib.mkIf config.features.homeManager.enable {
 
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
@@ -99,6 +103,7 @@
               > "$CLAUDE_JSON.tmp" && mv "$CLAUDE_JSON.tmp" "$CLAUDE_JSON"
           fi
         '';
+    };
     };
   };
 }

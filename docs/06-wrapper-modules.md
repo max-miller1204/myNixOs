@@ -85,7 +85,7 @@ perSystem = { pkgs, lib, self', ... }: {
       input.keyboard.xkb.layout = "us,ua";
       layout.gaps = 5;
       binds = {
-        "Mod+Return".spawn-sh = lib.getExe pkgs.alacritty;
+        "Mod+Return".spawn-sh = lib.getExe self'.packages.myAlacritty;
         "Mod+Q".close-window = null;
         "Mod+S".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
       };
@@ -102,26 +102,97 @@ Key things happening here:
   same config, for the same system (see `03-self-and-self-prime.md`).
 - The `binds` attribute set maps key combos to niri actions typed as Nix.
 
-## Connecting the wrapped package to NixOS
-
-The wrapper produces a package. To make NixOS actually use it as the system's
-niri compositor, you point the NixOS option at it:
+## alacritty.nix
 
 ```nix
-# Still in niri.nix, the NixOS module part
-flake.nixosModules.niri = { pkgs, lib, ... }: {
-  programs.niri = {
-    enable = true;
-    package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
-    #          ^^^ the wrapped package from perSystem above
+perSystem = { pkgs, ... }: {
+  packages.myAlacritty = inputs.wrapper-modules.wrappers.alacritty.wrap {
+    inherit pkgs;
+    settings = {
+      window.opacity = 0.75;
+      keyboard.bindings = [
+        { key = "Return"; mods = "Shift"; chars = "\\u001B\\r"; }
+      ];
+    };
+  };
+};
+```
+
+Settings format: TOML (nested attribute sets). See `alacritty(5)` for options.
+
+## git.nix
+
+```nix
+perSystem = { pkgs, ... }: {
+  packages.myGit = inputs.wrapper-modules.wrappers.git.wrap {
+    inherit pkgs;
+    settings = {
+      user = { name = "max"; email = "maxmiller1204@outlook.com"; };
+      init.defaultBranch = "main";
+      push.autoSetupRemote = true;
+      pull.rebase = true;
+    };
+  };
+};
+```
+
+Settings format: git INI (nested attrsets become INI sections). See `git-config(1)`.
+
+## vim.nix
+
+Vim uses a different interface — `vimrc` (raw string) and `plugins` (list of
+packages) instead of `settings`:
+
+```nix
+perSystem = { pkgs, ... }: {
+  packages.myVim = inputs.wrapper-modules.wrappers.vim.wrap {
+    inherit pkgs;
+    vimrc = ''
+      set number
+      set relativenumber
+      set tabstop=2
+      set shiftwidth=2
+      set expandtab
+    '';
+  };
+};
+```
+
+## Connecting the wrapped package to NixOS
+
+The wrapper produces a package. To make NixOS actually use it, you create a
+toggleable NixOS module with `mkEnableOption`:
+
+```nix
+flake.nixosModules.niri = { pkgs, lib, config, ... }: {
+  options.features.niri.enable = lib.mkEnableOption "Niri compositor";
+
+  config = lib.mkIf config.features.niri.enable {
+    programs.niri = {
+      enable = true;
+      package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
+    };
   };
 };
 ```
 
 Same file, two blocks: one `perSystem` block that builds the package, one
-`flake.nixosModules` block that installs it.
+`flake.nixosModules` block that installs it. The feature is enabled in the
+host's `configuration.nix`:
+
+```nix
+features.niri.enable = true;
+```
+
+All feature modules follow this pattern — they are imported but dormant by
+default, and explicitly enabled per-host.
 
 ## Finding available wrappers
 
-Check the wrapper-modules repo for the full list of supported programs:
-https://github.com/BirdeeHub/nix-wrapper-modules
+```bash
+nix eval github:BirdeeHub/nix-wrapper-modules#wrappers --apply 'w: builtins.attrNames w'
+```
+
+Currently used in this config: niri, noctalia-shell, alacritty, git, vim.
+
+Full list and docs: https://github.com/BirdeeHub/nix-wrapper-modules

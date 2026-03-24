@@ -56,13 +56,47 @@ nixosConfigurations.myMachine
   └─ modules: [ self.nixosModules.myMachineConfiguration ]
        └─ myMachineConfiguration imports:
             ├─ self.nixosModules.myMachineHardware   (hardware.nix)
-            └─ self.nixosModules.niri                (niri.nix)
+            ├─ self.nixosModules.context7Secret       (context7-secret.nix)
+            ├─ self.nixosModules.youtubeSecret        (youtube-secret.nix)
+            ├─ self.nixosModules.niri                 (niri.nix)
+            ├─ self.nixosModules.homeManager          (home.nix)
+            ├─ self.nixosModules.alacritty            (alacritty.nix)
+            ├─ self.nixosModules.git                  (git.nix)
+            └─ self.nixosModules.vim                  (vim.nix)
 ```
 
 Notice: `default.nix` only lists `myMachineConfiguration`. That module then
 pulls in hardware and features via its `imports` list. This is the intended
 pattern — `default.nix` is a thin entry point; the real imports live in
 `configuration.nix`.
+
+## Toggleable features with mkEnableOption
+
+Feature modules use `mkEnableOption` so they can be toggled per-host:
+
+```nix
+{ self, inputs, ... }: {
+  flake.nixosModules.myFeature = { pkgs, lib, config, ... }: {
+    options.features.myFeature.enable = lib.mkEnableOption "My feature";
+
+    config = lib.mkIf config.features.myFeature.enable {
+      # actual config goes here
+    };
+  };
+}
+```
+
+Features are imported but dormant by default. Enable them in the host config:
+
+```nix
+features.niri.enable = true;
+features.homeManager.enable = true;
+features.alacritty.enable = true;
+# etc.
+```
+
+All custom toggles live under the `features.*` namespace to avoid clashing
+with upstream NixOS options.
 
 ## NixOS module arguments vs flake-parts module arguments
 

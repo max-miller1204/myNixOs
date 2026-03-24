@@ -9,13 +9,15 @@ Create `modules/features/my-feature.nix`:
 
 ```nix
 { self, inputs, ... }: {
-  flake.nixosModules.myFeature = { pkgs, lib, ... }: {
-    environment.systemPackages = with pkgs; [
-      ripgrep
-      fd
-    ];
+  flake.nixosModules.myFeature = { pkgs, lib, config, ... }: {
+    options.features.myFeature.enable = lib.mkEnableOption "My feature";
 
-    programs.git.enable = true;
+    config = lib.mkIf config.features.myFeature.enable {
+      environment.systemPackages = with pkgs; [
+        ripgrep
+        fd
+      ];
+    };
   };
 }
 ```
@@ -28,11 +30,13 @@ imports = [
   self.nixosModules.niri
   self.nixosModules.myFeature    # ← add this
 ];
+
+features.myFeature.enable = true;  # ← turn it on
 ```
 
 ## Feature with a per-system package (wrapper-modules or custom derivation)
 
-If your feature needs to build something (like niri does), use both
+If your feature needs to build something (like niri or alacritty), use both
 `perSystem` and `flake.nixosModules` in the same file:
 
 ```nix
@@ -40,24 +44,21 @@ If your feature needs to build something (like niri does), use both
 
   # 1. Build the package (runs per architecture)
   perSystem = { pkgs, lib, self', ... }: {
-    packages.myTool = pkgs.callPackage ./my-tool-package.nix {};
-    # or use wrapper-modules:
-    # packages.myTool = inputs.wrapper-modules.wrappers.sometool.wrap {
-    #   inherit pkgs;
-    #   settings = { ... };
-    # };
+    packages.myTool = inputs.wrapper-modules.wrappers.sometool.wrap {
+      inherit pkgs;
+      settings = { ... };
+    };
   };
 
-  # 2. Install it via a NixOS module
-  flake.nixosModules.myTool = { pkgs, ... }: {
-    environment.systemPackages = [
-      self.packages.${pkgs.stdenv.hostPlatform.system}.myTool
-    ];
-    # or for a program with a NixOS option:
-    # programs.myTool = {
-    #   enable = true;
-    #   package = self.packages.${pkgs.stdenv.hostPlatform.system}.myTool;
-    # };
+  # 2. Install it via a toggleable NixOS module
+  flake.nixosModules.myTool = { pkgs, lib, config, ... }: {
+    options.features.myTool.enable = lib.mkEnableOption "My tool";
+
+    config = lib.mkIf config.features.myTool.enable {
+      environment.systemPackages = [
+        self.packages.${pkgs.stdenv.hostPlatform.system}.myTool
+      ];
+    };
   };
 
 }
@@ -68,6 +69,7 @@ If your feature needs to build something (like niri does), use both
 - [ ] Module name is unique (e.g., `myFeatureName` — no conflicts with existing names)
 - [ ] `inherit pkgs;` is present when calling `.wrap { }` from wrapper-modules
 - [ ] Feature is added to `imports` in the machine's `configuration.nix`
+- [ ] `features.myFeature.enable = true;` is set in the machine's `configuration.nix`
 - [ ] If referencing another per-system package: use `self'` inside `perSystem`,
       use `self.packages.${pkgs.stdenv.hostPlatform.system}` inside NixOS modules
 

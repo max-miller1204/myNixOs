@@ -42,8 +42,23 @@ Paste the hardware config, wrapped as a flake-parts module:
   flake.nixosModules.myLaptopConfiguration = { pkgs, ... }: {
     imports = [
       self.nixosModules.myLaptopHardware
-      self.nixosModules.niri           # reuse existing feature
+      self.nixosModules.niri           # reuse existing features
+      self.nixosModules.alacritty
+      self.nixosModules.git
+      self.nixosModules.vim
+      self.nixosModules.homeManager
+      self.nixosModules.context7Secret
+      self.nixosModules.youtubeSecret
     ];
+
+    # Toggle features on/off per machine
+    features.niri.enable = true;
+    features.alacritty.enable = true;
+    features.git.enable = true;
+    features.vim.enable = true;
+    features.homeManager.enable = true;
+    features.context7Secret.enable = true;
+    features.youtubeSecret.enable = true;
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
