@@ -62,7 +62,8 @@ nixosConfigurations.myMachine
             ├─ self.nixosModules.homeManager          (home.nix)
             ├─ self.nixosModules.alacritty            (alacritty.nix)
             ├─ self.nixosModules.git                  (git.nix)
-            └─ self.nixosModules.vim                  (vim.nix)
+            ├─ self.nixosModules.vim                  (vim.nix)
+            └─ self.nixosModules.nvidia              (nvidia.nix)
 ```
 
 Notice: `default.nix` only lists `myMachineConfiguration`. That module then
@@ -92,6 +93,7 @@ Features are imported but dormant by default. Enable them in the host config:
 features.niri.enable = true;
 features.homeManager.enable = true;
 features.alacritty.enable = true;
+features.nvidia.enable = true;
 # etc.
 ```
 

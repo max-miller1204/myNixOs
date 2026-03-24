@@ -29,6 +29,7 @@ modules/
     home.nix                       ← Home Manager config for user max
     context7-secret.nix            ← SOPS-nix secret for Context7 API key
     youtube-secret.nix             ← SOPS-nix secret for YouTube API key
+    nvidia.nix                    ← NVIDIA driver feature toggle (videoDrivers + hardware.nvidia)
 ```
 
 ## How the pieces connect
@@ -48,7 +49,8 @@ flake.nix
             ├─ vim.nix            → adds flake.nixosModules.vim + perSystem.packages.myVim
             ├─ home.nix           → adds flake.nixosModules.homeManager
             ├─ context7-secret.nix → adds flake.nixosModules.context7Secret
-            └─ youtube-secret.nix → adds flake.nixosModules.youtubeSecret
+            ├─ youtube-secret.nix → adds flake.nixosModules.youtubeSecret
+            └─ nvidia.nix         → adds flake.nixosModules.nvidia
 ```
 
 Each doc in this folder explains one concept in depth. Read them in order:

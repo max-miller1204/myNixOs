@@ -85,3 +85,8 @@ nix build .#nixosConfigurations.myMachine.config.system.build.toplevel
 # Switch
 sudo nixos-rebuild switch --flake .#myMachine
 ```
+
+## Practical notes
+
+- If your flake input is a local Git repo (`git+file://`), new module files must be tracked before evaluation can see them. After creating `modules/features/my-feature.nix`, run `git add modules/features/my-feature.nix`.
+- On current nixpkgs with NVIDIA driver `>= 560`, you must set `hardware.nvidia.open` explicitly in your NVIDIA feature module (`true` for open kernel module, or `false` for proprietary).

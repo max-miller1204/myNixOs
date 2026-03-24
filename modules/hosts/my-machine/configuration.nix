@@ -15,6 +15,7 @@
       self.nixosModules.alacritty
       self.nixosModules.git
       self.nixosModules.vim
+      self.nixosModules.nvidia
     ];
 
     # Enable feature modules
@@ -25,6 +26,7 @@
     features.alacritty.enable = true;
     features.git.enable = true;
     features.vim.enable = true;
+    features.nvidia.enable = true;
 
     # Symlink bwrap to /usr/bin so Codex can find it
     system.activationScripts.bwrap = ''
