@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       self.nixosModules.myMachineHardware
       self.nixosModules.context7Secret
+      self.nixosModules.youtubeSecret
       self.nixosModules.niri
       self.nixosModules.homeManager
     ];
@@ -118,6 +119,7 @@
       vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       claude-code
       codex
+      nodejs
       bubblewrap
       alacritty
       gh
@@ -125,6 +127,7 @@
       jq
       git
       tree
+      vscode
     ];
 
     # Some programs need SUID wrappers, can be configured further or are

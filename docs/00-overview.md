@@ -51,3 +51,4 @@ Each doc in this folder explains one concept in depth. Read them in order:
 8. `08-adding-a-feature.md` — recipe: add a new feature module
 9. `09-claude-code-mcp.md` — recipe: add an MCP server to Claude Code
 10. `09-context7-secrets.md` — recipe: manage secrets with sops-nix (API keys, tokens, etc.)
+11. `10-vimjoyer-videos.md` — curated Vimjoyer video reference organized by topic

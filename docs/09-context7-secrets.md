@@ -15,19 +15,50 @@ secrets/*.sops.yaml (encrypted, committed to git)
 The AGE private key lives at `~/.config/sops/age/keys.txt` and is the one
 piece that must be transferred manually to new machines.
 
+## Prerequisites: `.sops.yaml` config
+
+sops needs to know which encryption keys to use. There are two ways:
+
+1. **`.sops.yaml` config file (recommended)** — lives at the project root and
+   tells sops which AGE keys to use automatically. This lets you run simple
+   commands like `sops secrets/foo.sops.yaml` to create/edit secrets.
+
+   ```yaml
+   # .sops.yaml
+   keys:
+     - &max age15ru6t...your_public_key
+
+   creation_rules:
+     - path_regex: secrets/.*\.sops\.yaml$
+       key_groups:
+         - age:
+             - *max
+   ```
+
+   Get your public key with:
+   ```bash
+   nix shell nixpkgs#age --command age-keygen -y ~/.config/sops/age/keys.txt
+   ```
+
+2. **`--age` flag on the command line** — passes the key inline, bypassing
+   `.sops.yaml` entirely. This works but is verbose and easy to forget.
+
+If you have `.sops.yaml` set up, use the simpler commands below. If not,
+you'll need to pass `--age` explicitly every time.
+
 ## Adding a new secret
 
 ### 1. Add the secret to a sops file
 
-Add to an existing file:
+**With `.sops.yaml` (simple):**
 
 ```bash
-nix shell nixpkgs#sops nixpkgs#age --command sops secrets/context7.sops.yaml
+nix shell nixpkgs#sops nixpkgs#age --command sops secrets/my-service.sops.yaml
 ```
 
-This opens your editor — add a new key/value pair and save.
+This opens your editor — add key/value pairs and save. sops encrypts automatically.
 
-Or create a new sops file:
+**Without `.sops.yaml` (inline key):**
 
 ```bash
 nix shell nixpkgs#sops nixpkgs#age --command \
@@ -103,9 +134,9 @@ systemd.services.my-service = {
 };
 ```
 
-## Worked example: Context7
+## Worked examples
 
-The Context7 MCP server is the existing example of this pattern:
+### Context7
 
 | Piece | File |
 |---|---|
@@ -114,7 +145,35 @@ The Context7 MCP server is the existing example of this pattern:
 | Wrapper script | `~/.claude/run-context7.sh` (reads `/run/secrets/context7_api_key`) |
 | MCP server entry | Declared in `claudeMcpServers` attrset in `modules/features/home.nix` |
 
-The wrapper script reads the decrypted key at runtime — no plaintext key
+### YouTube MCP Server
+
+| Piece | File / Source |
+|---|---|
+| Nix derivation | External flake: `github:max-miller1204/youtube-mcp-server-nix` |
+| Encrypted secret | `secrets/youtube.sops.yaml` |
+| Nix module | `modules/features/youtube-secret.nix` |
+| Wrapper script | `~/.claude/run-youtube.sh` (reads `/run/secrets/youtube_api_key`) |
+| MCP server entry | Declared in `claudeMcpServers` attrset in `modules/features/home.nix` |
+
+The upstream npm package was broken, so the server is built from source in a
+separate flake repo and added as a flake input in `flake.nix`.
+
+**Note:** Because `context7-secret.nix` already sets `defaultSopsFile`, the
+YouTube module uses per-secret `sopsFile` instead to point at its own file:
+
+```nix
+secrets.youtube_api_key = {
+  sopsFile = secretFile;   # per-secret override
+  format = "yaml";
+  mode = "0400";
+  owner = "max";
+};
+```
+
+Use this per-secret `sopsFile` pattern for any additional secrets that live
+in a different file than the default.
+
+Each wrapper script reads the decrypted key at runtime — no plaintext key
 ever touches a config file.
 
 ## Bootstrap on a new machine

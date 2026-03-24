@@ -19,6 +19,11 @@
           args = [ ];
           type = "stdio";
         };
+        youtube = {
+          command = "${config.home.homeDirectory}/.claude/run-youtube.sh";
+          args = [ ];
+          type = "stdio";
+        };
       };
     in
     {
@@ -56,6 +61,25 @@
 
           export CONTEXT7_API_KEY="$(tr -d '\n' < "$secret_file")"
           exec nix shell nixpkgs#nodejs --command npx -y @upstash/context7-mcp "$@"
+        '';
+      };
+
+      # YouTube MCP launcher — reads API key from sops-nix secret at runtime
+      home.file.".claude/run-youtube.sh" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          secret_file="/run/secrets/youtube_api_key"
+          if [[ ! -r "$secret_file" ]]; then
+            echo "Missing YouTube API key at $secret_file" >&2
+            echo "Create secrets/youtube.sops.yaml and rebuild." >&2
+            exit 1
+          fi
+
+          export YOUTUBE_API_KEY="$(tr -d '\n' < "$secret_file")"
+          exec ${inputs.youtube-mcp-server.packages.${pkgs.stdenv.hostPlatform.system}.youtube-mcp-server}/bin/zubeid-youtube-mcp-server "$@"
         '';
       };
 

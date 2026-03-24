@@ -1,0 +1,8 @@
+keys:
+  - &max age15ru6tzj38rxlcpw0c2jr4q4n4mrna8v7vvclpz9drq8czqjdgdmsux97fh
+
+creation_rules:
+  - path_regex: secrets/.*\.sops\.yaml$
+    key_groups:
+      - age:
+          - *max

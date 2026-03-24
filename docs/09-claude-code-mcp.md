@@ -51,9 +51,11 @@ Restart Claude Code and verify with `/mcp`.
 ## NixOS considerations
 
 Most MCP servers expect `npx` or `node` in `$PATH`, which NixOS doesn't
-provide by default. Two approaches:
+provide by default. Three approaches, from simplest to most involved:
 
 ### 1. Use `nix run` directly (preferred for flake-based servers)
+
+If the server has a working flake or is in nixpkgs:
 
 ```nix
 my-server = {
@@ -63,7 +65,7 @@ my-server = {
 };
 ```
 
-### 2. Use a wrapper script (for npm-based servers)
+### 2. Use a wrapper script (for npm-based servers that work with npx)
 
 Add a wrapper in `home.nix` via `home.file`:
 
@@ -86,6 +88,37 @@ my-server = {
   type = "stdio";
 };
 ```
+
+### 3. Build from source as a Nix derivation (for broken npm packages)
+
+Some npm packages are broken (missing dependencies, ESM/CJS issues). In that
+case, create a separate flake repo with a `buildNpmPackage` derivation that
+builds from source and patches the issues. Then add it as a flake input.
+
+**Example:** The `youtube-mcp-server` npm package has a broken ESM dependency,
+so we built it from source in a separate repo:
+[max-miller1204/youtube-mcp-server-nix](https://github.com/max-miller1204/youtube-mcp-server-nix)
+
+In `flake.nix`:
+```nix
+inputs.youtube-mcp-server.url = "github:max-miller1204/youtube-mcp-server-nix";
+```
+
+In the wrapper script:
+```nix
+home.file.".claude/run-youtube.sh" = {
+  executable = true;
+  text = ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+    export YOUTUBE_API_KEY="$(tr -d '\n' < /run/secrets/youtube_api_key)"
+    exec ${inputs.youtube-mcp-server.packages.${pkgs.stdenv.hostPlatform.system}.youtube-mcp-server}/bin/zubeid-youtube-mcp-server "$@"
+  '';
+};
+```
+
+This avoids runtime `npx` downloads and ensures the server is pre-built in
+the Nix store.
 
 ## API keys and secrets
 
