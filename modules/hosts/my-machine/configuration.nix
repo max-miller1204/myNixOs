@@ -3,11 +3,11 @@
   flake.nixosModules.myMachineConfiguration = { config, pkgs, ... }: {
     nixpkgs.overlays = [
       inputs.claude-code.overlays.default
-      inputs.codex.overlays.default
     ];
   imports =
     [ # Include the results of the hardware scan.
       self.nixosModules.myMachineHardware
+      inputs.sops-nix.nixosModules.sops
       self.nixosModules.context7Secret
       self.nixosModules.youtubeSecret
       self.nixosModules.niri
@@ -28,11 +28,9 @@
     features.vim.enable = true;
     features.nvidia.enable = true;
 
-    # Symlink bwrap to /usr/bin so Codex can find it
-    system.activationScripts.bwrap = ''
-      mkdir -p /usr/bin
-      ln -sf ${pkgs.bubblewrap}/bin/bwrap /usr/bin/bwrap
-    '';
+    # sops-nix base config
+    sops.age.keyFile = "/home/max/.config/sops/age/keys.txt";
+    sops.age.generateKey = false;
 
     # flakes
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -140,11 +138,9 @@
     # $ nix search wget
     environment.systemPackages = with pkgs; [
       claude-code
-      codex
       nodejs
       bubblewrap
       gh
-      brightnessctl
       jq
       ripgrep
       tree

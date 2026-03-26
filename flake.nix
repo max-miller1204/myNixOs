@@ -17,7 +17,6 @@
     };
 
     claude-code.url = "github:sadjow/claude-code-nix";
-    codex.url = "github:sadjow/codex-cli-nix";
     youtube-mcp-server.url = "github:max-miller1204/youtube-mcp-server-nix";
   };
 

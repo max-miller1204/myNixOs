@@ -7,6 +7,7 @@ This configuration uses a layered stack of tools that each solve one problem:
 | `flake-parts` | Splits flake outputs into composable modules |
 | `import-tree` | Auto-loads every `.nix` file under `modules/` |
 | `wrapper-modules` | Wraps programs (niri, noctalia, alacritty, git, vim) with typed settings instead of raw config |
+| `sops-nix` | Decrypts secrets from git-committed YAML files at rebuild time (imported once in `configuration.nix`) |
 
 ## File Map
 

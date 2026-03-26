@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 let
   secretFile = ../../secrets/youtube.sops.yaml;
   hasSecretFile = builtins.pathExists secretFile;
@@ -6,8 +6,6 @@ in
 {
   flake.nixosModules.youtubeSecret = { config, ... }: {
     options.features.youtubeSecret.enable = lib.mkEnableOption "YouTube SOPS secret";
-
-    imports = [ inputs.sops-nix.nixosModules.sops ];
 
     config = lib.mkIf config.features.youtubeSecret.enable {
       sops = lib.optionalAttrs hasSecretFile {

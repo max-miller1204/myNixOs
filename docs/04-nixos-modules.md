@@ -56,6 +56,7 @@ nixosConfigurations.myMachine
   └─ modules: [ self.nixosModules.myMachineConfiguration ]
        └─ myMachineConfiguration imports:
             ├─ self.nixosModules.myMachineHardware   (hardware.nix)
+            ├─ inputs.sops-nix.nixosModules.sops      (sops-nix — imported once here)
             ├─ self.nixosModules.context7Secret       (context7-secret.nix)
             ├─ self.nixosModules.youtubeSecret        (youtube-secret.nix)
             ├─ self.nixosModules.niri                 (niri.nix)

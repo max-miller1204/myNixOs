@@ -76,31 +76,38 @@ Create a new module or add to an existing one:
 
 ```nix
 # modules/features/my-service-secret.nix
-{ inputs, lib, ... }:
+{ lib, ... }:
 let
   secretFile = ../../secrets/my-service.sops.yaml;
   hasSecretFile = builtins.pathExists secretFile;
 in
 {
-  flake.nixosModules.myServiceSecret = { ... }: {
-    imports = [ inputs.sops-nix.nixosModules.sops ];
+  flake.nixosModules.myServiceSecret = { config, ... }: {
+    options.features.myServiceSecret.enable = lib.mkEnableOption "My Service SOPS secret";
 
-    sops = {
-      age.keyFile = "/home/max/.config/sops/age/keys.txt";
-      age.generateKey = false;
-    } // lib.optionalAttrs hasSecretFile {
-      defaultSopsFile = secretFile;
-      defaultSopsFormat = "yaml";
-      secrets.my_api_key = {
-        mode = "0400";
-        owner = "max";
+    config = lib.mkIf config.features.myServiceSecret.enable {
+      sops = lib.optionalAttrs hasSecretFile {
+        secrets.my_api_key = {
+          sopsFile = secretFile;
+          format = "yaml";
+          mode = "0400";
+          owner = "max";
+        };
       };
+
+      warnings = lib.optionals (!hasSecretFile) [
+        "my-service secret file is missing: secrets/my-service.sops.yaml"
+      ];
     };
   };
 }
 ```
 
-### 3. Import the module in your machine config
+**Note:** sops-nix and the base age key config are imported once in
+`configuration.nix`, so secret modules only need to declare their secrets.
+Use the per-secret `sopsFile` attribute to point at the correct encrypted file.
+
+### 3. Import and enable the module in your machine config
 
 ```nix
 # modules/hosts/my-machine/configuration.nix
@@ -108,6 +115,8 @@ imports = [
   self.nixosModules.myServiceSecret
   # ...
 ];
+
+features.myServiceSecret.enable = true;
 ```
 
 ### 4. Rebuild
@@ -158,20 +167,20 @@ systemd.services.my-service = {
 The upstream npm package was broken, so the server is built from source in a
 separate flake repo and added as a flake input in `flake.nix`.
 
-**Note:** Because `context7-secret.nix` already sets `defaultSopsFile`, the
-YouTube module uses per-secret `sopsFile` instead to point at its own file:
+**Note:** Both secret modules use per-secret `sopsFile` to point at their own
+encrypted file. The base sops-nix import and age key config live in
+`configuration.nix`, so secret modules only declare their secrets:
 
 ```nix
 secrets.youtube_api_key = {
-  sopsFile = secretFile;   # per-secret override
+  sopsFile = secretFile;   # points to this module's encrypted file
   format = "yaml";
   mode = "0400";
   owner = "max";
 };
 ```
 
-Use this per-secret `sopsFile` pattern for any additional secrets that live
-in a different file than the default.
+Use this per-secret `sopsFile` pattern for all secrets.
 
 Each wrapper script reads the decrypted key at runtime — no plaintext key
 ever touches a config file.

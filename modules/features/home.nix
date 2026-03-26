@@ -97,10 +97,10 @@
           MCP_SOURCE="$HOME/.config/claude-code/mcp-servers.json"
 
           if [ ! -f "$CLAUDE_JSON" ]; then
-            run cat "$MCP_SOURCE" > "$CLAUDE_JSON"
-          elif run ${pkgs.jq}/bin/jq empty "$CLAUDE_JSON" 2>/dev/null; then
-            run ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$CLAUDE_JSON" "$MCP_SOURCE" \
-              > "$CLAUDE_JSON.tmp" && mv "$CLAUDE_JSON.tmp" "$CLAUDE_JSON"
+            $DRY_RUN_CMD cp "$MCP_SOURCE" "$CLAUDE_JSON"
+          elif ${pkgs.jq}/bin/jq empty "$CLAUDE_JSON" 2>/dev/null; then
+            $DRY_RUN_CMD ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$CLAUDE_JSON" "$MCP_SOURCE" \
+              > "$CLAUDE_JSON.tmp" && $DRY_RUN_CMD mv "$CLAUDE_JSON.tmp" "$CLAUDE_JSON"
           fi
         '';
     };
