@@ -111,7 +111,7 @@ home.file.".claude/run-youtube.sh" = {
   text = ''
     #!/usr/bin/env bash
     set -euo pipefail
-    export YOUTUBE_API_KEY="$(tr -d '\n' < /run/secrets/youtube_api_key)"
+    export YOUTUBE_API_KEY="$(tr -d '\n' < "${config.sops.secrets.youtube_api_key.path}")"
     exec ${inputs.youtube-mcp-server.packages.${pkgs.stdenv.hostPlatform.system}.youtube-mcp-server}/bin/zubeid-youtube-mcp-server "$@"
   '';
 };
@@ -123,8 +123,14 @@ the Nix store.
 ## API keys and secrets
 
 Never put API keys in the MCP server definitions. Instead, use a wrapper
-script that reads from sops-nix secrets at runtime. See `docs/09-context7-secrets.md`
-for the full pattern (Context7 is the working example).
+script that reads from sops-nix secrets at runtime.
+
+Secrets are managed at the **Home Manager level** inside `home.nix`. The
+sops-nix HM module decrypts secrets to `~/.config/sops-nix/secrets/` when
+you log in (via a systemd user service). Wrapper scripts reference the
+decrypted path via `config.sops.secrets.<name>.path`.
+
+See `docs/09-context7-secrets.md` for the full pattern.
 
 ### Transferring to a new machine
 
@@ -160,17 +166,11 @@ scripts) work on nix-darwin with minimal changes:
   resolves to `/Users/max` on macOS instead of `/home/max` — handled
   automatically
 - **`nix shell`/`nix run`**: Work identically on macOS
-- **sops-nix**: Supports nix-darwin via `inputs.sops-nix.darwinModules.sops`.
-  Decrypted secrets go to `/run/secrets/` on both platforms, so
-  `run-context7.sh` works as-is
-- **AGE key location**: macOS convention is
-  `~/Library/Application Support/sops/age/keys.txt`, but since
-  `context7-secret.nix` explicitly sets `age.keyFile` you can use any path
-
-To port this config to darwin, you'd need to:
-
-1. Replace `inputs.sops-nix.nixosModules.sops` with `inputs.sops-nix.darwinModules.sops`
-2. Update the `age.keyFile` path in `context7-secret.nix` to the darwin user's home
+- **sops-nix**: The HM-level sops-nix module works on both NixOS and darwin.
+  Secrets are decrypted to `~/.config/sops-nix/secrets/` on both platforms.
+- **AGE key location**: The age key path is set via
+  `sops.age.keyFile` in `home.nix` using `config.home.homeDirectory`, so it
+  resolves correctly on both platforms
 
 ## How the activation script works
 

@@ -56,21 +56,26 @@ nixosConfigurations.myMachine
   └─ modules: [ self.nixosModules.myMachineConfiguration ]
        └─ myMachineConfiguration imports:
             ├─ self.nixosModules.myMachineHardware   (hardware.nix)
-            ├─ inputs.sops-nix.nixosModules.sops      (sops-nix — imported once here)
-            ├─ self.nixosModules.context7Secret       (context7-secret.nix)
-            ├─ self.nixosModules.youtubeSecret        (youtube-secret.nix)
+            ├─ self.nixosModules.variables            (variables.nix — centralized config)
             ├─ self.nixosModules.niri                 (niri.nix)
-            ├─ self.nixosModules.homeManager          (home.nix)
+            ├─ self.nixosModules.homeManager          (home.nix — includes HM SOPS secrets)
             ├─ self.nixosModules.alacritty            (alacritty.nix)
             ├─ self.nixosModules.git                  (git.nix)
             ├─ self.nixosModules.vim                  (vim.nix)
-            └─ self.nixosModules.nvidia              (nvidia.nix)
+            ├─ self.nixosModules.nvidia               (nvidia.nix)
+            ├─ self.nixosModules.zram                 (zram.nix)
+            ├─ self.nixosModules.nh                   (nh.nix)
+            ├─ self.nixosModules.shell                (shell.nix — Fish/Starship/Atuin)
+            └─ self.nixosModules.catppuccin           (catppuccin.nix)
 ```
 
 Notice: `default.nix` only lists `myMachineConfiguration`. That module then
 pulls in hardware and features via its `imports` list. This is the intended
 pattern — `default.nix` is a thin entry point; the real imports live in
 `configuration.nix`.
+
+Secrets (Context7, YouTube API keys) are managed at the Home Manager level
+inside `home.nix` using `sops-nix`'s Home Manager module, not system-level.
 
 ## Toggleable features with mkEnableOption
 
@@ -95,6 +100,10 @@ features.niri.enable = true;
 features.homeManager.enable = true;
 features.alacritty.enable = true;
 features.nvidia.enable = true;
+features.zram.enable = true;
+features.nh.enable = true;
+features.shell.enable = true;
+features.catppuccin.enable = true;
 # etc.
 ```
 

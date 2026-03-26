@@ -42,13 +42,17 @@ Paste the hardware config, wrapped as a flake-parts module:
   flake.nixosModules.myLaptopConfiguration = { pkgs, ... }: {
     imports = [
       self.nixosModules.myLaptopHardware
+      self.nixosModules.variables      # centralized variables (always include)
       self.nixosModules.niri           # reuse existing features
       self.nixosModules.alacritty
       self.nixosModules.git
       self.nixosModules.vim
-      self.nixosModules.homeManager
-      self.nixosModules.context7Secret
-      self.nixosModules.youtubeSecret
+      self.nixosModules.homeManager    # includes HM-level SOPS secrets
+      self.nixosModules.shell          # Fish + Starship + Atuin
+      self.nixosModules.catppuccin     # system-wide theming
+      self.nixosModules.zram
+      self.nixosModules.nh
+      self.nixosModules.nvidia         # only if NVIDIA hardware
     ];
 
     # Toggle features on/off per machine
@@ -57,8 +61,11 @@ Paste the hardware config, wrapped as a flake-parts module:
     features.git.enable = true;
     features.vim.enable = true;
     features.homeManager.enable = true;
-    features.context7Secret.enable = true;
-    features.youtubeSecret.enable = true;
+    features.shell.enable = true;
+    features.catppuccin.enable = true;
+    features.zram.enable = true;
+    features.nh.enable = true;
+    features.nvidia.enable = true;  # set false if no NVIDIA
 
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
 

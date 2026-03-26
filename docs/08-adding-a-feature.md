@@ -86,7 +86,49 @@ nix build .#nixosConfigurations.myMachine.config.system.build.toplevel
 sudo nixos-rebuild switch --flake .#myMachine
 ```
 
+## Feature with Home Manager config
+
+If your feature needs to set per-user config (shell aliases, dotfiles, HM programs),
+extend `home-manager.users` from your module using `config.my.variables.username`:
+
+```nix
+{ self, inputs, ... }: {
+  flake.nixosModules.myFeature = { pkgs, lib, config, ... }: {
+    options.features.myFeature.enable = lib.mkEnableOption "My feature";
+
+    config = lib.mkIf config.features.myFeature.enable {
+      # NixOS-level config
+      programs.some-program.enable = true;
+
+      # Home Manager-level config (merged with other modules)
+      home-manager.users.${config.my.variables.username} = {
+        programs.some-program = {
+          enable = true;
+          settings = { ... };
+        };
+      };
+    };
+  };
+}
+```
+
+Multiple modules can set `home-manager.users.max` — NixOS merges them automatically
+(unless there's a conflict, in which case use `lib.mkForce`).
+
+## Using centralized variables
+
+Access shared values via `config.my.variables.*` inside NixOS modules:
+
+```nix
+config = lib.mkIf config.features.myFeature.enable {
+  users.users.${config.my.variables.username}.extraGroups = [ "docker" ];
+  time.timeZone = config.my.variables.timezone;
+  # Available: username, editor, terminal, browser, monitor, timezone,
+  #            locale, font, catppuccin.flavor, catppuccin.accent
+};
+```
+
 ## Practical notes
 
-- If your flake input is a local Git repo (`git+file://`), new module files must be tracked before evaluation can see them. After creating `modules/features/my-feature.nix`, run `git add modules/features/my-feature.nix`.
+- New module files must be `git add`-ed before `nix flake check` or rebuild can see them (flakes only read git-tracked files).
 - On current nixpkgs with NVIDIA driver `>= 560`, you must set `hardware.nvidia.open` explicitly in your NVIDIA feature module (`true` for open kernel module, or `false` for proprietary).
