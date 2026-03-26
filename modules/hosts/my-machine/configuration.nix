@@ -5,32 +5,32 @@
       inputs.claude-code.overlays.default
     ];
   imports =
-    [ # Include the results of the hardware scan.
+    [
       self.nixosModules.myMachineHardware
-      inputs.sops-nix.nixosModules.sops
-      self.nixosModules.context7Secret
-      self.nixosModules.youtubeSecret
+      self.nixosModules.variables
       self.nixosModules.niri
       self.nixosModules.homeManager
       self.nixosModules.alacritty
       self.nixosModules.git
       self.nixosModules.vim
       self.nixosModules.nvidia
+      self.nixosModules.zram
+      self.nixosModules.nh
+      self.nixosModules.shell
+      self.nixosModules.catppuccin
     ];
 
     # Enable feature modules
     features.niri.enable = true;
     features.homeManager.enable = true;
-    features.context7Secret.enable = true;
-    features.youtubeSecret.enable = true;
     features.alacritty.enable = true;
     features.git.enable = true;
     features.vim.enable = true;
     features.nvidia.enable = true;
-
-    # sops-nix base config
-    sops.age.keyFile = "/home/max/.config/sops/age/keys.txt";
-    sops.age.generateKey = false;
+    features.zram.enable = true;
+    features.nh.enable = true;
+    features.shell.enable = true;
+    features.catppuccin.enable = true;
 
     # flakes
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -62,21 +62,21 @@
     networking.networkmanager.enable = true;
 
     # Set your time zone.
-    time.timeZone = "America/New_York";
+    time.timeZone = config.my.variables.timezone;
 
     # Select internationalisation properties.
-    i18n.defaultLocale = "en_US.UTF-8";
+    i18n.defaultLocale = config.my.variables.locale;
 
-    i18n.extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "en_US.UTF-8";
-      LC_MEASUREMENT = "en_US.UTF-8";
-      LC_MONETARY = "en_US.UTF-8";
-      LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
-      LC_PAPER = "en_US.UTF-8";
-      LC_TELEPHONE = "en_US.UTF-8";
-      LC_TIME = "en_US.UTF-8";
+    i18n.extraLocaleSettings = let locale = config.my.variables.locale; in {
+      LC_ADDRESS = locale;
+      LC_IDENTIFICATION = locale;
+      LC_MEASUREMENT = locale;
+      LC_MONETARY = locale;
+      LC_NAME = locale;
+      LC_NUMERIC = locale;
+      LC_PAPER = locale;
+      LC_TELEPHONE = locale;
+      LC_TIME = locale;
     };
 
     # Enable the X11 windowing system.
@@ -114,10 +114,10 @@
     # Enable touchpad support (enabled default in most desktopManager).
     # services.xserver.libinput.enable = true;
 
-    # Define a user account. Don't forget to set a password with ‘passwd’.
-    users.users.max = {
+    # Define a user account. Don’t forget to set a password with ‘passwd’.
+    users.users.${config.my.variables.username} = {
       isNormalUser = true;
-      description = "max";
+      description = config.my.variables.username;
       extraGroups = [ "networkmanager" "wheel" ];
       packages = with pkgs; [
       #  thunderbird
@@ -146,6 +146,14 @@
       tree
       vscode
       anki
+      just
+      nvd
+    ];
+
+    # Fonts
+    fonts.packages = with pkgs; [
+      jetbrains-mono
+      nerd-fonts.jetbrains-mono
     ];
 
     # Some programs need SUID wrappers, can be configured further or are

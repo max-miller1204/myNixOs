@@ -32,6 +32,9 @@
         input.keyboard.xkb.layout = "us,ua";
         layout.gaps = 5;
         layout.focus-ring.off = null;
+        layout.border.width = 2;
+        layout.border.active-color = "#cba6f7";
+        layout.border.inactive-color = "#585b70";
 
         binds = {
           # --- Your custom binds ---

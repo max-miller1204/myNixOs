@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
   flake.nixosModules.homeManager = { pkgs, lib, config, ... }: {
-    options.features.homeManager.enable = lib.mkEnableOption "Home Manager for user max";
+    options.features.homeManager.enable = lib.mkEnableOption "Home Manager for primary user";
 
     imports = [ inputs.home-manager.nixosModules.home-manager ];
 
@@ -10,7 +10,7 @@
     home-manager.useUserPackages = true;
     home-manager.backupFileExtension = "hm-backup";
 
-    home-manager.users.max = { config, ... }:
+    home-manager.users.${config.my.variables.username} = { config, ... }:
     let
       claudeMcpServers = {
         nixos = {
@@ -31,14 +31,17 @@
       };
     in
     {
+      imports = [ inputs.sops-nix.homeManagerModules.sops ];
+
       home.stateVersion = "25.11";
 
-      home.pointerCursor = {
-        name = "Adwaita";
-        package = pkgs.adwaita-icon-theme;
-        size = 24;
-        gtk.enable = true;
-        x11.enable = true;
+      # SOPS secrets (Home Manager level)
+      sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+      sops.secrets.context7_api_key = {
+        sopsFile = ../../secrets/context7.sops.yaml;
+      };
+      sops.secrets.youtube_api_key = {
+        sopsFile = ../../secrets/youtube.sops.yaml;
       };
 
       # Claude Code config
@@ -49,17 +52,17 @@
       };
       home.file.".claude/skills/nix/SKILL.md".source = ./claude/skills/nix/SKILL.md;
 
-      # Context7 MCP launcher — reads API key from sops-nix secret at runtime
+      # Context7 MCP launcher — reads API key from HM sops-nix secret at runtime
       home.file.".claude/run-context7.sh" = {
         executable = true;
         text = ''
           #!/usr/bin/env bash
           set -euo pipefail
 
-          secret_file="/run/secrets/context7_api_key"
+          secret_file="${config.sops.secrets.context7_api_key.path}"
           if [[ ! -r "$secret_file" ]]; then
             echo "Missing context7 key at $secret_file" >&2
-            echo "Create secrets/context7.sops.yaml and rebuild." >&2
+            echo "Check sops-nix HM activation." >&2
             exit 1
           fi
 
@@ -68,17 +71,17 @@
         '';
       };
 
-      # YouTube MCP launcher — reads API key from sops-nix secret at runtime
+      # YouTube MCP launcher — reads API key from HM sops-nix secret at runtime
       home.file.".claude/run-youtube.sh" = {
         executable = true;
         text = ''
           #!/usr/bin/env bash
           set -euo pipefail
 
-          secret_file="/run/secrets/youtube_api_key"
+          secret_file="${config.sops.secrets.youtube_api_key.path}"
           if [[ ! -r "$secret_file" ]]; then
             echo "Missing YouTube API key at $secret_file" >&2
-            echo "Create secrets/youtube.sops.yaml and rebuild." >&2
+            echo "Check sops-nix HM activation." >&2
             exit 1
           fi
 
