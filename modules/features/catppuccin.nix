@@ -34,10 +34,16 @@
           style.name = "kvantum";
         };
 
-        # Force dark color scheme for GTK/libadwaita apps
+        # GTK settings management + catppuccin icon theme
+        gtk.enable = true;
+        gtk.gtk4.theme = null;
+        catppuccin.gtk.icon.enable = true;
+
+        # Dark mode: dconf for GTK4/libadwaita, gtk3 setting for Thunar etc.
         dconf.settings."org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
         };
+        gtk.gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
       };
     };
   };

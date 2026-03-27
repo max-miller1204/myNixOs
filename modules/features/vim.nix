@@ -13,6 +13,7 @@
     packages.myVim = inputs.wrapper-modules.wrappers.vim.wrap {
       inherit pkgs;
       vimrc = ''
+        set background=dark
         set number
         set relativenumber
         set tabstop=2

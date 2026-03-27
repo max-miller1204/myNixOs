@@ -16,6 +16,7 @@
       self.nixosModules.nh
       self.nixosModules.shell
       self.nixosModules.catppuccin
+      self.nixosModules.thunar
     ];
 
     # Enable feature modules
@@ -30,6 +31,7 @@
     features.nh.enable = true;
     features.shell.enable = true;
     features.catppuccin.enable = true;
+    features.thunar.enable = true;
 
     # flakes
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -78,23 +80,26 @@
       LC_TIME = locale;
     };
 
-    # Enable the X11 windowing system.
-    services.xserver.enable = true;
-
-    # Enable the GNOME Desktop Environment.
-    services.displayManager.gdm.enable = true;
-    services.desktopManager.gnome.enable = true;
-
-    # Configure keymap in X11
-    services.xserver.xkb = {
-      layout = "us";
-      variant = "";
+    # Display manager: greetd + tuigreet
+    services.greetd = {
+      enable = true;
+      useTextGreeter = true;
+      settings.default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri-session";
+        user = "greeter";
+      };
     };
 
-    # Enable CUPS to print documents.
+    hardware.bluetooth.enable = true;
+
+    programs.niri.useNautilus = false;
+    xdg.portal = {
+      xdgOpenUsePortal = true;
+      config.common.default = [ "gtk" ];
+    };
+
     services.printing.enable = true;
 
-    # Enable sound with pipewire.
     services.pulseaudio.enable = false;
     security.rtkit.enable = true;
     services.pipewire = {
@@ -102,28 +107,14 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      # If you want to use JACK applications, uncomment this
-      #jack.enable = true;
-
-      # use the example session manager (no others are packaged yet so this is enabled by default,
-      # no need to redefine it in your config for now)
-      #media-session.enable = true;
     };
 
-    # Enable touchpad support (enabled default in most desktopManager).
-    # services.xserver.libinput.enable = true;
-
-    # Define a user account. Don’t forget to set a password with ‘passwd’.
     users.users.${config.my.variables.username} = {
       isNormalUser = true;
       description = config.my.variables.username;
       extraGroups = [ "networkmanager" "wheel" ];
-      packages = with pkgs; [
-      #  thunderbird
-      ];
     };
 
-    # Install firefox.
     programs.firefox.enable = true;
 
     # Enable askpass so sudo works from non-terminal contexts (e.g. Claude Code)
@@ -136,6 +127,8 @@
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment.systemPackages = with pkgs; [
+      loupe
+      zathura
       codex
       nodejs
       bubblewrap

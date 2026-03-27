@@ -35,6 +35,30 @@
 
       home.stateVersion = "25.11";
 
+      # Default applications
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "inode/directory" = [ "thunar.desktop" ];
+
+          # Images — loupe
+          "image/png" = [ "org.gnome.Loupe.desktop" ];
+          "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
+          "image/gif" = [ "org.gnome.Loupe.desktop" ];
+          "image/webp" = [ "org.gnome.Loupe.desktop" ];
+          "image/svg+xml" = [ "org.gnome.Loupe.desktop" ];
+
+          # PDFs — zathura
+          "application/pdf" = [ "org.pwmt.zathura.desktop" ];
+
+          # Web — firefox (override Chrome registrations)
+          "text/html" = [ "firefox.desktop" ];
+          "application/xhtml+xml" = [ "firefox.desktop" ];
+          "x-scheme-handler/http" = [ "firefox.desktop" ];
+          "x-scheme-handler/https" = [ "firefox.desktop" ];
+        };
+      };
+
       # SOPS secrets (Home Manager level)
       sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
       sops.secrets.context7_api_key = {
