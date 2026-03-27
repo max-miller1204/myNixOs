@@ -28,6 +28,14 @@
           position._attrs = { x = 1755; y = 0; };  # after eDP-1 logical width at 1.75 scale
         };
 
+        # Allow client-side transparency (e.g. Alacritty opacity)
+        window-rules = [
+          {
+            clip-to-geometry = true;
+            draw-border-with-background = false;
+          }
+        ];
+
         xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
         input.keyboard.xkb.layout = "us,ua";
         layout.gaps = 5;
