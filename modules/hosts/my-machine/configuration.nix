@@ -138,6 +138,7 @@
     # $ nix search wget
     environment.systemPackages = with pkgs; [
       claude-code
+      codex
       nodejs
       bubblewrap
       gh
