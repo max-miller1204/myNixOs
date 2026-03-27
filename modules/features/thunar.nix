@@ -14,6 +14,9 @@
 
       # Thunar uses XFCE's helper system for "Open in Terminal"
       home-manager.users.${config.my.variables.username} = {
+        xdg.mimeApps.defaultApplications = {
+          "inode/directory" = [ "thunar.desktop" ];
+        };
         xdg.configFile."xfce4/helpers.rc".text = ''
           TerminalEmulator=${config.my.variables.terminal}
           TerminalEmulatorDismissed=true

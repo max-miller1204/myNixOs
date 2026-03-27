@@ -26,6 +26,36 @@
         default = "eDP-1";
         description = "Primary monitor name";
       };
+      secondaryMonitor = lib.mkOption {
+        type = lib.types.str;
+        default = "DP-3";
+        description = "Secondary monitor name";
+      };
+      email = lib.mkOption {
+        type = lib.types.str;
+        default = "maxmiller1204@outlook.com";
+        description = "Primary email address";
+      };
+      location = lib.mkOption {
+        type = lib.types.str;
+        default = "Blacksburg";
+        description = "Location name for weather and locale";
+      };
+      wallpaperDir = lib.mkOption {
+        type = lib.types.str;
+        default = "/home/max/Pictures/Wallpapers";
+        description = "Path to wallpaper directory";
+      };
+      avatarPath = lib.mkOption {
+        type = lib.types.str;
+        default = "/home/max/.face";
+        description = "Path to user avatar image";
+      };
+      flakePath = lib.mkOption {
+        type = lib.types.str;
+        default = "/home/max/myNixOS";
+        description = "Path to the NixOS flake directory";
+      };
       timezone = lib.mkOption {
         type = lib.types.str;
         default = "America/New_York";

@@ -1,91 +1,17 @@
 { self, inputs, ... }: {
   flake.nixosModules.alacritty = { pkgs, lib, config, ... }: {
-    options.features.alacritty.enable = lib.mkEnableOption "Wrapped Alacritty terminal";
+    options.features.alacritty.enable = lib.mkEnableOption "Alacritty terminal with Catppuccin theming";
 
     config = lib.mkIf config.features.alacritty.enable {
-      environment.systemPackages = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.myAlacritty
-      ];
-    };
-  };
-
-  perSystem = { pkgs, ... }: {
-    packages.myAlacritty = inputs.wrapper-modules.wrappers.alacritty.wrap {
-      inherit pkgs;
-      settings = {
-        window.opacity = 0.75;
-        keyboard.bindings = [
-          { key = "Return"; mods = "Shift"; chars = "\\u001B\\r"; }
-        ];
-
-        # Catppuccin Mocha colors
-        colors.primary = {
-          background = "#1e1e2e";
-          foreground = "#cdd6f4";
-          dim_foreground = "#7f849c";
-          bright_foreground = "#cdd6f4";
-        };
-        colors.cursor = {
-          text = "#1e1e2e";
-          cursor = "#f5e0dc";
-        };
-        colors.vi_mode_cursor = {
-          text = "#1e1e2e";
-          cursor = "#b4befe";
-        };
-        colors.search.matches = {
-          foreground = "#1e1e2e";
-          background = "#a6adc8";
-        };
-        colors.search.focused_match = {
-          foreground = "#1e1e2e";
-          background = "#a6e3a1";
-        };
-        colors.footer_bar = {
-          foreground = "#1e1e2e";
-          background = "#a6adc8";
-        };
-        colors.hints.start = {
-          foreground = "#1e1e2e";
-          background = "#f9e2af";
-        };
-        colors.hints.end = {
-          foreground = "#1e1e2e";
-          background = "#a6adc8";
-        };
-        colors.selection = {
-          text = "#1e1e2e";
-          background = "#f5e0dc";
-        };
-        colors.normal = {
-          black = "#45475a";
-          red = "#f38ba8";
-          green = "#a6e3a1";
-          yellow = "#f9e2af";
-          blue = "#89b4fa";
-          magenta = "#f5c2e7";
-          cyan = "#94e2d5";
-          white = "#bac2de";
-        };
-        colors.bright = {
-          black = "#585b70";
-          red = "#f38ba8";
-          green = "#a6e3a1";
-          yellow = "#f9e2af";
-          blue = "#89b4fa";
-          magenta = "#f5c2e7";
-          cyan = "#94e2d5";
-          white = "#a6adc8";
-        };
-        colors.dim = {
-          black = "#45475a";
-          red = "#f38ba8";
-          green = "#a6e3a1";
-          yellow = "#f9e2af";
-          blue = "#89b4fa";
-          magenta = "#f5c2e7";
-          cyan = "#94e2d5";
-          white = "#bac2de";
+      home-manager.users.${config.my.variables.username} = {
+        programs.alacritty = {
+          enable = true;
+          settings = {
+            window.opacity = 0.75;
+            keyboard.bindings = [
+              { key = "Return"; mods = "Shift"; chars = "\\u001B\\r"; }
+            ];
+          };
         };
       };
     };

@@ -1,26 +1,22 @@
 { self, inputs, ... }: {
   flake.nixosModules.git = { pkgs, lib, config, ... }: {
-    options.features.git.enable = lib.mkEnableOption "Wrapped Git with bundled config";
+    options.features.git.enable = lib.mkEnableOption "Git with user config";
 
     config = lib.mkIf config.features.git.enable {
-      environment.systemPackages = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.myGit
-      ];
-    };
-  };
-
-  perSystem = { pkgs, ... }: {
-    packages.myGit = inputs.wrapper-modules.wrappers.git.wrap {
-      inherit pkgs;
-      settings = {
-        user = {
-          name = "max";
-          email = "maxmiller1204@outlook.com";
+      home-manager.users.${config.my.variables.username} = {
+        programs.git = {
+          enable = true;
+          settings = {
+            user = {
+              name = config.my.variables.username;
+              email = config.my.variables.email;
+            };
+            init.defaultBranch = "main";
+            push.autoSetupRemote = true;
+            pull.rebase = true;
+            credential."https://github.com".helper = "${pkgs.gh}/bin/gh auth git-credential";
+          };
         };
-        init.defaultBranch = "main";
-        push.autoSetupRemote = true;
-        pull.rebase = true;
-        credential."https://github.com".helper = "${pkgs.gh}/bin/gh auth git-credential";
       };
     };
   };

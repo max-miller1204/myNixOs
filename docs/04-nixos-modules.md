@@ -53,20 +53,30 @@ NixOS modules stored in your flake. You can reference them anywhere via `self`.
 
 ```
 nixosConfigurations.myMachine
-  └─ modules: [ self.nixosModules.myMachineConfiguration ]
-       └─ myMachineConfiguration imports:
-            ├─ self.nixosModules.myMachineHardware   (hardware.nix)
-            ├─ self.nixosModules.variables            (variables.nix — centralized config)
-            ├─ self.nixosModules.niri                 (niri.nix)
-            ├─ self.nixosModules.homeManager          (home.nix — includes HM SOPS secrets)
-            ├─ self.nixosModules.alacritty            (alacritty.nix)
-            ├─ self.nixosModules.git                  (git.nix)
-            ├─ self.nixosModules.vim                  (vim.nix)
-            ├─ self.nixosModules.nvidia               (nvidia.nix)
-            ├─ self.nixosModules.zram                 (zram.nix)
-            ├─ self.nixosModules.nh                   (nh.nix)
-            ├─ self.nixosModules.shell                (shell.nix — Fish/Starship/Atuin)
-            └─ self.nixosModules.catppuccin           (catppuccin.nix)
+  +-- modules: [ self.nixosModules.myMachineConfiguration ]
+       +-- myMachineConfiguration imports:
+            |-- self.nixosModules.myMachineHardware   (hardware.nix)
+            |-- self.nixosModules.variables            (variables.nix — centralized config)
+            |-- self.nixosModules.overlays              (overlays.nix)
+            |-- self.nixosModules.niri                  (niri.nix)
+            |-- self.nixosModules.homeManager           (home.nix — includes HM SOPS secrets)
+            |-- self.nixosModules.alacritty             (alacritty.nix — HM programs.alacritty)
+            |-- self.nixosModules.git                   (git.nix — HM programs.git)
+            |-- self.nixosModules.vim                   (vim.nix — HM programs.vim)
+            |-- self.nixosModules.nvidia                (nvidia.nix)
+            |-- self.nixosModules.zram                  (zram.nix)
+            |-- self.nixosModules.nh                    (nh.nix)
+            |-- self.nixosModules.shell                 (shell.nix — Fish/Starship/Atuin)
+            |-- self.nixosModules.catppuccin            (catppuccin.nix)
+            |-- self.nixosModules.thunar                (thunar.nix)
+            |-- self.nixosModules.browsers              (browsers.nix — Firefox/Chrome)
+            |-- self.nixosModules.devTools               (dev-tools.nix — codex, vscode, etc.)
+            |-- self.nixosModules.media                  (media.nix — loupe, zathura)
+            |-- self.nixosModules.utilities              (utilities.nix — anki, nvd, etc.)
+            |-- self.nixosModules.audio                  (audio.nix — PipeWire + sox)
+            |-- self.nixosModules.greetd                 (greetd.nix — display manager)
+            |-- self.nixosModules.bluetooth              (bluetooth.nix)
+            +-- self.nixosModules.printing               (printing.nix)
 ```
 
 Notice: `default.nix` only lists `myMachineConfiguration`. That module then
@@ -99,11 +109,9 @@ Features are imported but dormant by default. Enable them in the host config:
 features.niri.enable = true;
 features.homeManager.enable = true;
 features.alacritty.enable = true;
-features.nvidia.enable = true;
-features.zram.enable = true;
-features.nh.enable = true;
-features.shell.enable = true;
-features.catppuccin.enable = true;
+features.browsers.enable = true;
+features.devTools.enable = true;
+features.audio.enable = true;
 # etc.
 ```
 

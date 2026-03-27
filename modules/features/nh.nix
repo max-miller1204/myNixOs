@@ -5,7 +5,7 @@
     config = lib.mkIf config.features.nh.enable {
       programs.nh = {
         enable = true;
-        flake = "/home/${config.my.variables.username}/myNixOS";
+        flake = config.my.variables.flakePath;
       };
     };
   };

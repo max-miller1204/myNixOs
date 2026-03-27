@@ -42,39 +42,34 @@ settings baked in. You assign it to `perSystem.packages.myProgram`.
 The `inherit pkgs;` line is critical. Without it, wrapper-modules doesn't
 know which nixpkgs instance to use and will fail or silently use the wrong one.
 
+## Programs using wrapper-modules
+
+Currently used for **niri** and **noctalia-shell** only. Alacritty, git, and vim
+have been migrated to Home Manager with catppuccin auto-theming.
+
 ## noctalia.nix
 
-Noctalia settings are defined as an inline Nix attrset (no external JSON file):
+Noctalia settings are defined as a Nix attrset with variables for monitors,
+location, paths, etc. defined in a `let` block:
 
 ```nix
-perSystem = { pkgs, ... }: let
-  noctaliaConfig = {
-    settings = {
-      settingsVersion = 57;
-      bar = {
-        barType = "simple";
-        position = "left";
-        monitors = [ "eDP-1" ];
-        # ... hundreds of settings ...
-      };
-      idle = {
-        enabled = true;
-        screenOffTimeout = 600;
-        lockTimeout = 660;
-        suspendTimeout = 1800;
-        # ...
-      };
-      # ...
-    };
-    state = {
-      # Initial state seed — Noctalia overwrites this at runtime
-      # ...
-    };
-  };
+{ self, inputs, ... }: let
+  primaryMonitor = "eDP-1";
+  secondaryMonitor = "DP-3";
+  location = "Blacksburg";
+  wallpaperDir = "/home/max/Pictures/Wallpapers";
+  avatarPath = "/home/max/.face";
 in {
-  packages.myNoctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
-    inherit pkgs;
-    inherit (noctaliaConfig) settings;
+  perSystem = { pkgs, ... }: let
+    noctaliaConfig = {
+      settings = { ... };   # ~500 lines of typed Nix config
+      state = { ... };       # initial state seed (Noctalia overwrites at runtime)
+    };
+  in {
+    packages.myNoctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
+      inherit pkgs;
+      inherit (noctaliaConfig) settings;
+    };
   };
 };
 ```
@@ -93,23 +88,31 @@ The `state` block (wallpaper paths, display geometry, etc.) is included as
 an initial seed but Noctalia overwrites it at runtime — it will drift from
 the declared values.
 
+Note: `perSystem` blocks cannot access `config.my.variables.*` (NixOS module
+scope), so monitor names and paths are defined as plain `let` bindings at the
+flake-parts module level.
+
 ## niri.nix
 
 ```nix
-perSystem = { pkgs, lib, self', ... }: {
-  packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
-    inherit pkgs;
-    settings = {
-      spawn-at-startup = [
-        (lib.getExe self'.packages.myNoctalia)   # launch noctalia on start
-      ];
-      xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
-      input.keyboard.xkb.layout = "us,ua";
-      layout.gaps = 5;
-      binds = {
-        "Mod+Return".spawn-sh = lib.getExe self'.packages.myAlacritty;
-        "Mod+Q".close-window = null;
-        "Mod+S".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
+{ self, inputs, ... }: let
+  primaryMonitor = "eDP-1";
+  secondaryMonitor = "DP-3";
+in {
+  perSystem = { pkgs, lib, self', ... }: {
+    packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
+      inherit pkgs;
+      settings = {
+        spawn-at-startup = [
+          (lib.getExe self'.packages.myNoctalia)   # launch noctalia on start
+        ];
+        outputs.${primaryMonitor} = { ... };
+        outputs.${secondaryMonitor} = { ... };
+        binds = {
+          "Mod+Return".spawn-sh = lib.getExe pkgs.alacritty;
+          "Mod+Q".close-window = null;
+          "Mod+Space".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
+        };
       };
     };
   };
@@ -123,62 +126,6 @@ Key things happening here:
 - `self'.packages.myNoctalia` — references the noctalia package defined in the
   same config, for the same system (see `03-self-and-self-prime.md`).
 - The `binds` attribute set maps key combos to niri actions typed as Nix.
-
-## alacritty.nix
-
-```nix
-perSystem = { pkgs, ... }: {
-  packages.myAlacritty = inputs.wrapper-modules.wrappers.alacritty.wrap {
-    inherit pkgs;
-    settings = {
-      window.opacity = 0.75;
-      keyboard.bindings = [
-        { key = "Return"; mods = "Shift"; chars = "\\u001B\\r"; }
-      ];
-    };
-  };
-};
-```
-
-Settings format: TOML (nested attribute sets). See `alacritty(5)` for options.
-
-## git.nix
-
-```nix
-perSystem = { pkgs, ... }: {
-  packages.myGit = inputs.wrapper-modules.wrappers.git.wrap {
-    inherit pkgs;
-    settings = {
-      user = { name = "max"; email = "maxmiller1204@outlook.com"; };
-      init.defaultBranch = "main";
-      push.autoSetupRemote = true;
-      pull.rebase = true;
-    };
-  };
-};
-```
-
-Settings format: git INI (nested attrsets become INI sections). See `git-config(1)`.
-
-## vim.nix
-
-Vim uses a different interface — `vimrc` (raw string) and `plugins` (list of
-packages) instead of `settings`:
-
-```nix
-perSystem = { pkgs, ... }: {
-  packages.myVim = inputs.wrapper-modules.wrappers.vim.wrap {
-    inherit pkgs;
-    vimrc = ''
-      set number
-      set relativenumber
-      set tabstop=2
-      set shiftwidth=2
-      set expandtab
-    '';
-  };
-};
-```
 
 ## Connecting the wrapped package to NixOS
 
@@ -215,10 +162,6 @@ default, and explicitly enabled per-host.
 nix eval github:BirdeeHub/nix-wrapper-modules#wrappers --apply 'w: builtins.attrNames w'
 ```
 
-Currently used in this config: niri, noctalia-shell, alacritty, git, vim.
-
-Note: Catppuccin Mocha colors are manually added to `alacritty.nix` (full
-palette) and `niri.nix` (border colors) since wrapper-modules packages
-bypass Home Manager and can't be auto-themed by catppuccin/nix.
+Currently used in this config: niri, noctalia-shell.
 
 Full list and docs: https://github.com/BirdeeHub/nix-wrapper-modules

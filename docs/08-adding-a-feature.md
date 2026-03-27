@@ -26,17 +26,15 @@ Enable it in your machine's `configuration.nix`:
 
 ```nix
 imports = [
-  self.nixosModules.myMachineHardware
-  self.nixosModules.niri
-  self.nixosModules.myFeature    # ← add this
+  self.nixosModules.myFeature    # add this
 ];
 
-features.myFeature.enable = true;  # ← turn it on
+features.myFeature.enable = true;  # turn it on
 ```
 
 ## Feature with a per-system package (wrapper-modules or custom derivation)
 
-If your feature needs to build something (like niri or alacritty), use both
+If your feature needs to build something (like niri or noctalia), use both
 `perSystem` and `flake.nixosModules` in the same file:
 
 ```nix
@@ -64,27 +62,7 @@ If your feature needs to build something (like niri or alacritty), use both
 }
 ```
 
-## Checklist
-
-- [ ] Module name is unique (e.g., `myFeatureName` — no conflicts with existing names)
-- [ ] `inherit pkgs;` is present when calling `.wrap { }` from wrapper-modules
-- [ ] Feature is added to `imports` in the machine's `configuration.nix`
-- [ ] `features.myFeature.enable = true;` is set in the machine's `configuration.nix`
-- [ ] If referencing another per-system package: use `self'` inside `perSystem`,
-      use `self.packages.${pkgs.stdenv.hostPlatform.system}` inside NixOS modules
-
-## Testing before switching
-
-```bash
-# Check evaluation (fast, no build)
-nix flake check
-
-# Build without switching
-nix build .#nixosConfigurations.myMachine.config.system.build.toplevel
-
-# Switch
-sudo nixos-rebuild switch --flake .#myMachine
-```
+Currently, wrapper-modules is used for niri and noctalia-shell.
 
 ## Feature with Home Manager config
 
@@ -115,6 +93,31 @@ extend `home-manager.users` from your module using `config.my.variables.username
 Multiple modules can set `home-manager.users.max` — NixOS merges them automatically
 (unless there's a conflict, in which case use `lib.mkForce`).
 
+This is the pattern used by alacritty.nix, vim.nix, git.nix, browsers.nix, media.nix,
+shell.nix, catppuccin.nix, and thunar.nix.
+
+## Checklist
+
+- [ ] Module name is unique (e.g., `myFeatureName` — no conflicts with existing names)
+- [ ] `inherit pkgs;` is present when calling `.wrap { }` from wrapper-modules
+- [ ] Feature is added to `imports` in the machine's `configuration.nix`
+- [ ] `features.myFeature.enable = true;` is set in the machine's `configuration.nix`
+- [ ] If referencing another per-system package: use `self'` inside `perSystem`,
+      use `self.packages.${pkgs.stdenv.hostPlatform.system}` inside NixOS modules
+
+## Testing before switching
+
+```bash
+# Check evaluation (fast, no build)
+nix flake check
+
+# Build without switching
+nix build .#nixosConfigurations.myMachine.config.system.build.toplevel
+
+# Switch
+sudo nixos-rebuild switch --flake .#myMachine
+```
+
 ## Using centralized variables
 
 Access shared values via `config.my.variables.*` inside NixOS modules:
@@ -123,8 +126,10 @@ Access shared values via `config.my.variables.*` inside NixOS modules:
 config = lib.mkIf config.features.myFeature.enable {
   users.users.${config.my.variables.username}.extraGroups = [ "docker" ];
   time.timeZone = config.my.variables.timezone;
-  # Available: username, editor, terminal, browser, monitor, timezone,
-  #            locale, font, catppuccin.flavor, catppuccin.accent
+  # Available: username, email, editor, terminal, browser, monitor,
+  #            secondaryMonitor, location, wallpaperDir, avatarPath,
+  #            flakePath, timezone, locale, font,
+  #            catppuccin.flavor, catppuccin.accent
 };
 ```
 

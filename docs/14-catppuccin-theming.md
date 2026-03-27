@@ -16,19 +16,19 @@ to switch the entire system's theme.
 These programs are configured via HM `programs.*` and the catppuccin HM module
 auto-applies the theme:
 
+- Alacritty terminal
 - Fish shell
 - Starship prompt
 - bat
 - fzf
 - Cursors (catppuccin-cursors.mochaMauve)
 
-### Manually themed (wrapper-modules packages)
+### Manually themed
 
-These are built via wrapper-modules, which bypasses Home Manager. Catppuccin
-colors are added as hex values directly in their settings:
+These use hex color values directly in their config since they bypass Home Manager:
 
-- **Alacritty** (`alacritty.nix`) — full Mocha color palette (16 colors + cursor + selection)
 - **Niri** (`niri.nix`) — `active-color = "#cba6f7"` (mauve), `inactive-color = "#585b70"` (surface2)
+- **Vim** (`vim.nix`) — uses `catppuccin-vim` plugin with `colorscheme catppuccin_mocha` (catppuccin/nix does not auto-theme vim, only neovim)
 
 ### Qt apps
 
@@ -50,7 +50,7 @@ the Mocha theme on everything else.
    system-wide flavor and accent
 2. **Home Manager level**: Imports `inputs.catppuccin.homeModules.catppuccin`,
    enables cursors, Qt/Kvantum theming, dark mode dconf setting, and
-   auto-themes all HM-managed programs
+   auto-themes all HM-managed programs (including alacritty)
 
 ## Changing the theme
 
@@ -64,8 +64,10 @@ catppuccin = {
 };
 ```
 
-Then manually update the hex values in `alacritty.nix` and `niri.nix` to match
+Then manually update the hex values in `niri.nix` (border colors) to match
 the new flavor. Color references: https://catppuccin.com/palette
+
+Alacritty, Fish, Starship, bat, and fzf will update automatically.
 
 ## Flake input
 

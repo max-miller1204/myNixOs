@@ -1,11 +1,20 @@
-{ self, inputs, ... }: {
+{ self, inputs, ... }: let
+  primaryMonitor = "eDP-1";
+  secondaryMonitor = "DP-3";
+in {
   flake.nixosModules.niri = { pkgs, lib, config, ... }: {
     options.features.niri.enable = lib.mkEnableOption "Niri compositor with custom config";
 
     config = lib.mkIf config.features.niri.enable {
       programs.niri = {
         enable = true;
+        useNautilus = false;
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
+      };
+
+      xdg.portal = {
+        xdgOpenUsePortal = true;
+        config.common.default = [ "gtk" ];
       };
     };
   };
@@ -19,11 +28,11 @@
         ];
 
         # Monitor layout: external (right of internal) is primary
-        outputs."eDP-1" = {
+        outputs.${primaryMonitor} = {
           position._attrs = { x = 0; y = 0; };
         };
         # External monitor (to the right of built-in)
-        outputs."DP-3" = {
+        outputs.${secondaryMonitor} = {
           focus-at-startup = null;
           position._attrs = { x = 1755; y = 0; };  # after eDP-1 logical width at 1.75 scale
         };
@@ -46,7 +55,7 @@
 
         binds = {
           # --- Your custom binds ---
-          "Mod+Return".spawn-sh = lib.getExe self'.packages.myAlacritty;
+          "Mod+Return".spawn-sh = lib.getExe pkgs.alacritty;
           "Mod+Space".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
 
           # --- Default niri binds ---
