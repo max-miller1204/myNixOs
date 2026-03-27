@@ -1,13 +1,11 @@
 { self, inputs, ... }: {
 
   flake.nixosModules.myMachineConfiguration = { config, pkgs, ... }: {
-    nixpkgs.overlays = [
-      inputs.claude-code.overlays.default
-    ];
   imports =
     [
       self.nixosModules.myMachineHardware
       self.nixosModules.variables
+      self.nixosModules.overlays
       self.nixosModules.niri
       self.nixosModules.homeManager
       self.nixosModules.alacritty
@@ -21,6 +19,7 @@
     ];
 
     # Enable feature modules
+    features.overlays.enable = true;
     features.niri.enable = true;
     features.homeManager.enable = true;
     features.alacritty.enable = true;
@@ -137,10 +136,10 @@
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     environment.systemPackages = with pkgs; [
-      claude-code
       codex
       nodejs
       bubblewrap
+      google-chrome
       gh
       jq
       ripgrep

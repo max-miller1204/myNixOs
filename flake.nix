@@ -21,6 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    antigravity-nix.url = "github:jacopone/antigravity-nix";
     claude-code.url = "github:sadjow/claude-code-nix";
     youtube-mcp-server.url = "github:max-miller1204/youtube-mcp-server-nix";
   };

@@ -1,16 +1,17 @@
-{ ... }: {
-  # Overlay example for future use.
-  # Uncomment and modify when you need to patch or override packages.
-  #
-  # flake.nixosModules.overlays = { ... }: {
-  #   nixpkgs.overlays = [
-  #     (final: prev: {
-  #       # Override an existing package:
-  #       # myPackage = prev.myPackage.override { enableFeature = true; };
-  #
-  #       # Add a custom package:
-  #       # myTool = final.callPackage ./packages/myTool { };
-  #     })
-  #   ];
-  # };
+{ self, inputs, ... }: {
+  flake.nixosModules.overlays = { pkgs, lib, config, ... }: {
+    options.features.overlays.enable = lib.mkEnableOption "Package overlays";
+
+    config = lib.mkIf config.features.overlays.enable {
+      nixpkgs.overlays = [
+        inputs.claude-code.overlays.default
+        inputs.antigravity-nix.overlays.default
+      ];
+
+      environment.systemPackages = with pkgs; [
+        claude-code
+        antigravity
+      ];
+    };
+  };
 }
