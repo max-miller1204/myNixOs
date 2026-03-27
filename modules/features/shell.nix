@@ -9,6 +9,10 @@
       home-manager.users.${config.my.variables.username} = {
         programs.fish = {
           enable = true;
+          interactiveShellInit = ''
+            set -g fish_greeting
+            pfetch
+          '';
           shellAliases = {
             ll = "ls -la";
             la = "ls -a";

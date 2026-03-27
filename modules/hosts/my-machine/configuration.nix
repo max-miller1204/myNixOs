@@ -148,6 +148,8 @@
       anki
       just
       nvd
+      sox
+      pfetch-rs
     ];
 
     # Fonts
