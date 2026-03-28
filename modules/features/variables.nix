@@ -46,6 +46,11 @@
         default = "/home/max/Pictures/Wallpapers";
         description = "Path to wallpaper directory";
       };
+      wallpaper = lib.mkOption {
+        type = lib.types.str;
+        default = "/home/max/Pictures/Wallpapers/yz6ggt7m18l41.png";
+        description = "Path to wallpaper image";
+      };
       avatarPath = lib.mkOption {
         type = lib.types.str;
         default = "/home/max/.face";
