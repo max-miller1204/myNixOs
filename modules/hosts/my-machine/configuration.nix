@@ -25,6 +25,7 @@
       self.nixosModules.greetd
       self.nixosModules.bluetooth
       self.nixosModules.printing
+      self.nixosModules.noctalia
     ];
 
     # Enable feature modules

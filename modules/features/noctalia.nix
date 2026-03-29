@@ -7,6 +7,10 @@
   wallpaperDir = "/home/max/Pictures/Wallpapers";
   avatarPath = "/home/max/.face";
 in {
+  flake.nixosModules.noctalia = { ... }: {
+    services.upower.enable = true;
+  };
+
   perSystem = { pkgs, ... }: let
 
     # --- Bar: position, appearance, widgets ---
