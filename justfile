@@ -2,15 +2,15 @@
 
 # Rebuild and switch to new configuration
 switch:
-    sudo nixos-rebuild switch --flake .#nixos
+    sudo nixos-rebuild switch --flake .#my-machine
 
 # Rebuild and set as next boot configuration
 boot:
-    sudo nixos-rebuild boot --flake .#nixos
+    sudo nixos-rebuild boot --flake .#my-machine
 
 # Rebuild and activate without adding to boot menu
 test:
-    sudo nixos-rebuild test --flake .#nixos
+    sudo nixos-rebuild test --flake .#my-machine
 
 # Update all flake inputs
 update:
@@ -26,7 +26,7 @@ check:
 
 # Show diff between current system and new build
 diff:
-    nixos-rebuild build --flake .#nixos && nvd diff /run/current-system result
+    nixos-rebuild build --flake .#my-machine && nvd diff /run/current-system result
 
 # Re-encrypt all secrets after key changes
 rekey:

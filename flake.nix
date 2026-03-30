@@ -4,8 +4,8 @@
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
+    den.url = "github:vic/den";
 
-    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,7 +26,7 @@
     youtube-mcp-server.url = "github:max-miller1204/youtube-mcp-server-nix";
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake 
+  outputs = inputs: inputs.flake-parts.lib.mkFlake
     {inherit inputs;}
     (inputs.import-tree ./modules);
 }
