@@ -43,7 +43,7 @@ claudeMcpServers = {
 Then rebuild:
 
 ```bash
-sudo nixos-rebuild switch --flake .#myMachine
+just switch
 ```
 
 Restart Claude Code and verify with `/mcp`.

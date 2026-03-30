@@ -7,9 +7,9 @@ Run them with `just <command>` from the repo directory.
 
 | Command | What it does |
 |---|---|
-| `just switch` | `sudo nixos-rebuild switch --flake .#myMachine` — rebuild and activate |
-| `just boot` | `sudo nixos-rebuild boot --flake .#myMachine` — rebuild, activate on next boot |
-| `just test` | `sudo nixos-rebuild test --flake .#myMachine` — rebuild and activate without adding to boot menu |
+| `just switch` | `sudo nixos-rebuild switch --flake .#nixos` — rebuild and activate |
+| `just boot` | `sudo nixos-rebuild boot --flake .#nixos` — rebuild, activate on next boot |
+| `just test` | `sudo nixos-rebuild test --flake .#nixos` — rebuild and activate without adding to boot menu |
 | `just update` | `nix flake update` — update all flake inputs to latest |
 | `just gc` | `sudo nix-collect-garbage -d` — delete old generations and free disk space |
 | `just check` | `nix flake check` — evaluate flake for syntax/type errors without building |

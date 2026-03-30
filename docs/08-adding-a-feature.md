@@ -112,10 +112,10 @@ shell.nix, catppuccin.nix, and thunar.nix.
 nix flake check
 
 # Build without switching
-nix build .#nixosConfigurations.myMachine.config.system.build.toplevel
+nix build .#nixosConfigurations.nixos.config.system.build.toplevel
 
 # Switch
-sudo nixos-rebuild switch --flake .#myMachine
+just switch
 ```
 
 ## Using centralized variables

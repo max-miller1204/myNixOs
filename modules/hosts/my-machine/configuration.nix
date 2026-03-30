@@ -26,12 +26,14 @@
       self.nixosModules.bluetooth
       self.nixosModules.printing
       self.nixosModules.noctalia
+      self.nixosModules.mcp
     ];
 
     # Enable feature modules
     features.overlays.enable = true;
     features.niri.enable = true;
     features.homeManager.enable = true;
+    features.mcp.enable = true;
     features.alacritty.enable = true;
     features.git.enable = true;
     features.vim.enable = true;
