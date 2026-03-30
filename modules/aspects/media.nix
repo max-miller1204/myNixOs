@@ -1,13 +1,11 @@
 { self, inputs, ... }: {
   den.aspects.media = {
-    nixos = { pkgs, ... }: {
-      environment.systemPackages = with pkgs; [
+    hmLinux = { pkgs, ... }: {
+      home.packages = with pkgs; [
         loupe
         zathura
       ];
-    };
 
-    homeManager = { ... }: {
       xdg.mimeApps.defaultApplications = {
         "image/png" = [ "org.gnome.Loupe.desktop" ];
         "image/jpeg" = [ "org.gnome.Loupe.desktop" ];

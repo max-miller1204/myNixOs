@@ -7,14 +7,22 @@
       den.aspects.alacritty
       den.aspects.dev-tools
       den.aspects.mcp
+      den.aspects.utilities
+      den.aspects.media
+      den.aspects.browsers
+      den.aspects.catppuccin
+      den.aspects.hmPlatforms
       den.provides.primary-user
       (den.provides.user-shell "fish")
     ];
 
+    hmLinux = { ... }: {
+      xdg.mimeApps.enable = true;
+    };
+
     homeManager = { config, pkgs, ... }: {
       imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
-      xdg.mimeApps.enable = true;
       sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
       # Claude Code dotfiles

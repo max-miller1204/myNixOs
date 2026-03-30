@@ -17,8 +17,11 @@
         enable = true;
         flavor = "mocha";
         accent = "mauve";
-        cursors.enable = true;
       };
+    };
+
+    hmLinux = { pkgs, lib, ... }: {
+      catppuccin.cursors.enable = true;
 
       home.pointerCursor = lib.mkForce {
         name = "catppuccin-mocha-mauve-cursors";

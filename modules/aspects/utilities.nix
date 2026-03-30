@@ -1,10 +1,15 @@
 { self, inputs, ... }: {
   den.aspects.utilities = {
-    nixos = { pkgs, ... }: {
-      environment.systemPackages = with pkgs; [
-        anki
+    homeManager = { pkgs, ... }: {
+      home.packages = with pkgs; [
         nvd
         pfetch-rs
+      ];
+    };
+
+    hmLinux = { pkgs, ... }: {
+      home.packages = with pkgs; [
+        anki
         bubblewrap
       ];
     };

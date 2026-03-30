@@ -15,7 +15,7 @@
       ];
     };
 
-    homeManager = { ... }: {
+    provides.to-users.homeManager = { ... }: {
       xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
     };
   };

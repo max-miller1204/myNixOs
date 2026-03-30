@@ -1,9 +1,5 @@
 { self, inputs, ... }: {
   den.aspects.shell = {
-    nixos = { pkgs, ... }: {
-      programs.fish.enable = true;
-    };
-
     homeManager = { ... }: {
       programs.fish = {
         enable = true;

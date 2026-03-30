@@ -1,11 +1,11 @@
 { self, inputs, ... }: {
   den.aspects.browsers = {
-    nixos = { pkgs, ... }: {
+    nixos = { ... }: {
       programs.firefox.enable = true;
-      environment.systemPackages = [ pkgs.google-chrome ];
     };
 
-    homeManager = { ... }: {
+    hmLinux = { pkgs, ... }: {
+      home.packages = [ pkgs.google-chrome ];
       xdg.mimeApps.defaultApplications = {
         "text/html" = [ "firefox.desktop" ];
         "application/xhtml+xml" = [ "firefox.desktop" ];

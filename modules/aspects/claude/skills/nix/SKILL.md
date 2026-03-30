@@ -1,21 +1,15 @@
 ---
 name: nix
-description: "Use this skill when the user asks about Nix, NixOS, flakes, flake-parts, nixpkgs, Home Manager, nix-darwin, system configuration, adding a machine or host, den, aspects, contexts, class routing, perSystem, import-tree, NixOS options, NixOS packages, or mentions any .nix file. Also use when the user says 'search for a package', 'find a NixOS option', 'check package versions', 'how do I configure', 'add a service', 'add a package', 'what version of X', or asks about any system configuration task. Use this skill even for general Nix questions like 'what does mkIf do', 'how do overlays work', or 'explain derivations'. This skill provides NixOS domain expertise and integrates with mcp__nixos__nix and mcp__nixos__nix_versions MCP tools for real-time package and option lookups."
+description: "Use this skill when the user asks about Nix, NixOS, flakes, flake-parts, nixpkgs, Home Manager, nix-darwin, system configuration, adding a machine or host, den, aspects, contexts, class routing, provides, homebrew, import-tree, NixOS options, NixOS packages, or mentions any .nix file. Also use when the user says 'search for a package', 'find a NixOS option', 'check package versions', 'how do I configure', 'add a service', 'add a package', 'what version of X', or asks about any system configuration task. Use this skill even for general Nix questions like 'what does mkIf do', 'how do overlays work', or 'explain derivations'. This skill provides NixOS domain expertise and integrates with mcp__nixos__nix and mcp__nixos__nix_versions MCP tools for real-time package and option lookups."
 ---
 
 # Nix / NixOS Expert
 
-Use the MCP tools below for real-time lookups — never guess package names, option paths, or versions. When working in `/home/max/myNixOS/`, follow the patterns here.
+Use the MCP tools below for real-time lookups — never guess package names, option paths, or versions. When working in `/home/max/myNixOS/`, follow the patterns here. For a detailed guide, read `docs/den.md`.
 
-## Project Architecture (Quick Reference)
+## Project Architecture
 
 The config uses **flake-parts** + **import-tree** + **den** (aspect-oriented framework). Entry point is `flake.nix` → `inputs.import-tree ./modules` which auto-discovers all `.nix` files. You almost never edit `flake.nix` — just add files under `modules/`.
-
-**Den** sits on top of flake-parts and provides:
-- **Aspects**: reusable configuration units (no `mkEnableOption` boilerplate)
-- **Context pipeline**: host → user → home evaluation chain
-- **Class routing**: `nixos`, `darwin`, `homeManager` keys in aspects auto-route to the right system
-- **Includes**: aspects compose via `includes = [ den.aspects.foo den.aspects.bar ]`
 
 **Two module systems** coexist:
 - **Outer** (flake-parts): `{ den, inputs, ... }: { ... }` — structures flake outputs and den config
@@ -23,127 +17,122 @@ The config uses **flake-parts** + **import-tree** + **den** (aspect-oriented fra
 
 Never mix their arguments. `den`/`inputs` belong to the outer function; `config`/`pkgs`/`lib` belong to the inner.
 
-## Den Aspect Pattern
+## Hosts
 
-Every feature is an aspect — no `mkEnableOption`, no `mkIf`, no manual imports:
+Declared in `modules/hosts.nix`. Each gets an aspect in `modules/hosts/<name>.nix`.
+
+| Host | System | Purpose |
+|------|--------|---------|
+| `nixos` | x86_64-linux | NixOS laptop (niri + noctalia desktop) |
+| `my-macbook` | aarch64-darwin | Apple Silicon Mac |
+| `ci-linux` | x86_64-linux | GitHub Actions runner (minimal, no users) |
+| `ci-darwin` | aarch64-darwin | GitHub Actions runner (minimal, no users) |
+
+## Class Keys
+
+Aspects route config by class key:
+
+| Key | Applied to |
+|-----|-----------|
+| `os` | Both NixOS and darwin (auto-forwarded) |
+| `nixos` | NixOS hosts only |
+| `darwin` | nix-darwin hosts only |
+| `homeManager` | All users on all platforms |
+| `hmLinux` | Home Manager on Linux only |
+| `hmDarwin` | Home Manager on macOS only |
+
+## Aspect Pattern
 
 ```nix
-# modules/aspects/my-feature.nix
 { den, ... }: {
   den.aspects.my-feature = {
-    # NixOS system-level config
-    nixos = { pkgs, ... }: {
-      environment.systemPackages = [ pkgs.hello ];
-    };
-
-    # Home Manager user-level config
-    homeManager = { pkgs, ... }: {
-      programs.git.enable = true;
-    };
-
-    # Include other aspects
-    includes = [
-      den.aspects.some-dependency
-    ];
+    os = { ... }: { };                 # both NixOS and darwin
+    nixos = { pkgs, ... }: { };        # NixOS system config
+    darwin = { pkgs, ... }: { };       # darwin system config
+    homeManager = { ... }: { };        # HM on all platforms
+    hmLinux = { ... }: { };            # HM Linux only
+    hmDarwin = { ... }: { };           # HM macOS only
+    includes = [ den.aspects.other ];  # compose aspects
   };
 }
 ```
 
-To use a feature: add it to a host or user aspect's `includes` list.
+## Host → User Config (`provides.to-users`)
 
-## Host and User Structure
+When a host aspect needs to push config to its users (e.g., deploy a config file), use `provides.to-users` — not a `homeManager` block in the host aspect:
 
-**Hosts are declared** in `modules/hosts.nix`:
 ```nix
-den.hosts.x86_64-linux.my-machine.users.max = {};
-```
-
-**Host aspects** define machine-specific config in `modules/hosts/<name>.nix`:
-```nix
-{ den, ... }: {
-  den.aspects.my-machine = {
-    includes = [ den.aspects.niri den.aspects.nvidia ... ];
-    nixos = { pkgs, ... }: { /* boot, networking, etc. */ };
+den.aspects.niri = {
+  nixos = { pkgs, ... }: { programs.niri.enable = true; };
+  provides.to-users.homeManager = { ... }: {
+    xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
   };
-}
+};
 ```
 
-**User aspects** define user-specific config in `modules/aspects/<username>.nix`:
-```nix
-{ den, inputs, ... }: {
-  den.aspects.max = {
-    includes = [ den.aspects.shell den.aspects.git ... ];
-    homeManager = { config, ... }: { /* user config */ };
-  };
-}
-```
+This scopes config to users on that specific host only.
 
-## Den Provides (Built-in Batteries)
+## Package Placement
 
-Den has built-in provides for common patterns:
-- `den.provides.primary-user` — makes the user an admin (wheel group)
-- `(den.provides.user-shell "fish")` — sets the user's login shell
-- `den._.mutual-provider` — enables host↔user bidirectional config
+| Package type | Where | Example |
+|---|---|---|
+| User CLI tools | `homeManager.home.packages` | dev-tools.nix |
+| User dotfiles/programs | `homeManager.programs.*` | git.nix, vim.nix |
+| Linux-only user tools/config | `hmLinux` | codex, vscode, xdg.mimeApps, loupe |
+| macOS-only user apps | `homebrew.casks` in homebrew.nix | claude, vscode, antigravity |
+| System services/drivers | `nixos`/`darwin` blocks | audio.nix, nvidia.nix |
+| Cross-platform system config | `os` block | nix-settings.nix |
+| Overlay-dependent packages | `nixos.environment.systemPackages` | overlays.nix (tied to system overlay) |
 
-Used in aspect includes:
-```nix
-den.aspects.max.includes = [
-  den.provides.primary-user
-  (den.provides.user-shell "fish")
-];
-```
+## Den Provides
 
-## Context Pipeline & Class Routing
+Infrastructure in `defaults.nix` and user includes:
 
-Den evaluates aspects through contexts:
-1. **Host context** `{ host }` — host aspect's `nixos`/`darwin` blocks
-2. **User context** `{ host, user }` — user aspect's `homeManager` block
-3. **Home context** `{ host, user, home }` — standalone home configs
+- `den.provides.define-user` — user creation infrastructure
+- `den.provides.hostname` — sets hostname from den host name
+- `den.provides.inputs'` — per-system flake inputs (`inputs'` arg)
+- `den.provides.self'` — per-system self outputs
+- `den.provides.primary-user` — admin user (wheel group)
+- `(den.provides.user-shell "fish")` — login shell on all platforms
+- `den._.mutual-provider` — host↔user bidirectional config
 
-**Class keys** in aspects:
-- `nixos = { ... }:` — applied to NixOS hosts
-- `darwin = { ... }:` — applied to nix-darwin hosts (future)
-- `homeManager = { ... }:` — applied to all users on all hosts
-
-**If config doesn't appear, check:**
-1. Is the aspect included in the host or user's `includes`?
-2. Is the class key correct? (`nixos` vs `homeManager` vs `darwin`)
-3. For parametric functions: are the expected args (`host`, `user`) in scope?
+User creation is handled by den provides — don't manually declare `users.users.*` in host aspects.
 
 ## Key Files
 
 | File | Purpose |
 |---|---|
-| `modules/den.nix` | Den bootstrap + ctx includes |
-| `modules/hosts.nix` | Host/user declarations |
-| `modules/defaults.nix` | Shared defaults (stateVersion, global includes) |
-| `modules/schema.nix` | Class configuration (homeManager by default) |
-| `modules/hosts/my-machine.nix` | Host aspect (hardware, boot, networking) |
-| `modules/aspects/max.nix` | User aspect (HM setup, claude dotfiles, sops) |
-| `modules/aspects/*.nix` | Feature aspects (git, shell, vim, niri, etc.) |
-| `hardware/my-machine.nix` | Hardware config (outside modules/ — plain NixOS module) |
+| `modules/den.nix` | Den bootstrap + darwinConfigurations option |
+| `modules/defaults.nix` | State versions + den.provides infrastructure (no aspects here) |
+| `modules/schema.nix` | hmLinux/hmDarwin class forwarding |
+| `modules/hosts.nix` | All host/user declarations |
+| `modules/hosts/nixos.nix` | NixOS host aspect |
+| `modules/hosts/my-macbook.nix` | Darwin host aspect |
+| `modules/hosts/ci-linux.nix` | CI host (minimal, self-contained) |
+| `modules/hosts/ci-darwin.nix` | CI host (minimal, self-contained) |
+| `modules/aspects/max.nix` | User aspect (includes all user features) |
+| `modules/aspects/*.nix` | Feature aspects |
+| `hardware/my-machine.nix` | Hardware config (outside modules/) |
+| `.github/workflows/build.yaml` | CI pipeline |
+| `docs/den.md` | Detailed guide — read for how-tos |
 
-## Adding a New Feature
+## Adding Things
 
-1. Create `modules/aspects/my-feature.nix`
-2. Add `nixos = { ... }:` for system config and/or `homeManager = { ... }:` for user config
-3. Add `den.aspects.my-feature` to the appropriate host or user `includes`
-4. That's it — import-tree auto-discovers the file
+**New package**: Add to an existing aspect's `homeManager.home.packages` (or `hmLinux` if Linux-only, or `homebrew.casks` if macOS-only).
 
-## Adding a New Machine
+**New aspect**: Create `modules/aspects/foo.nix`, add `den.aspects.foo` to the appropriate host or user `includes`.
 
-1. Add to `modules/hosts.nix`: `den.hosts.<system>.<name>.users.<user> = {};`
-2. Create `modules/hosts/<name>.nix` with the host aspect
-3. Create `hardware/<name>.nix` with hardware config (outside `modules/`)
-4. Build with: `nixos-rebuild switch --flake .#<name>`
+**New machine**: Add to `modules/hosts.nix`, create `modules/hosts/<name>.nix`, create `hardware/<name>.nix`.
+
+**New Homebrew cask**: Add to `modules/aspects/homebrew.nix` `casks` list.
 
 ## Niri and Noctalia
 
-Niri and noctalia use **native config files** (not wrapper-modules):
-- Niri: `modules/aspects/niri/config.kdl` (KDL format) deployed via `xdg.configFile`
-- Noctalia: `modules/aspects/noctalia/settings.json` (JSON) deployed via `xdg.configFile`
+Native config files deployed via `provides.to-users`:
+- **Niri**: `modules/aspects/niri/config.kdl` (KDL)
+- **Noctalia**: `modules/aspects/noctalia/settings.json` (JSON)
 
-To modify keybinds/settings, edit the config files directly.
+Edit these files directly to change keybinds/settings.
 
 ## MCP Tools
 
@@ -153,31 +142,32 @@ To modify keybinds/settings, edit the config files directly.
 - **Package details**: `action: "info", query: "alacritty", source: "nixos", type: "packages"`
 - **NixOS option**: `action: "search", query: "programs.niri", source: "nixos", type: "options"`
 - **Home Manager option**: `action: "search", query: "programs.git", source: "home-manager", type: "options"`
-- **Nix function (Noogle)**: `action: "search", query: "lib.mkIf", source: "noogle"`
+- **Nix function**: `action: "search", query: "lib.mkIf", source: "noogle"`
 
 ### mcp__nixos__nix_versions — Version History
 
-Check versions across channels: `package: "firefox"`. Filter: `package: "nodejs", version: "20"`.
+Check versions: `package: "firefox"`. Filter: `package: "nodejs", version: "20"`.
 
 ## Build Commands
 
 ```bash
-just switch    # rebuild and activate (.#my-machine)
-just test      # activate without adding to boot menu
-just check     # evaluate flake for errors
-just update    # update all flake inputs
-just gc        # garbage collect old generations
-just diff      # show diff with nvd
+just switch    # rebuild and activate (.#nixos)
+just test      # test without persisting
+just check     # validate flake
+just update    # update all inputs
+just gc        # garbage collect
+just diff      # show changes with nvd
 ```
-
-Or use `nh os switch` which auto-detects the flake path.
 
 ## Common Pitfalls
 
-- **Using `den` in inner modules** — `den` is a flake-parts arg, not available inside `nixos = { ... }:` blocks
-- **Mixing module arguments** — `den`/`inputs` are outer; `config`/`pkgs`/`lib` are inner
-- **Editing flake.nix** — almost never needed; import-tree auto-discovers
-- **New files not visible** — nix flakes only see git-tracked files; stage new files with `git add`
-- **The flake attribute is `.#my-machine`** — not `.#nixos` (old name)
-- **Duplicate options** — if using `den.provides.user-shell`, don't also set `users.users.*.shell` in your aspect
-- **Hardware files in modules/** — plain NixOS modules (not flake-parts) must live outside `modules/` (e.g., `hardware/`)
+- **`den` in inner modules** — `den` is a flake-parts arg, not available inside `nixos = { ... }:` blocks
+- **`homeManager` in host aspects** — use `provides.to-users.homeManager` for host→user config
+- **`users.users.*` in host aspects** — den provides handle user creation; don't declare users manually
+- **User packages in `environment.systemPackages`** — use `homeManager.home.packages` (exception: overlay-dependent packages stay at system level)
+- **Linux-only HM config in `homeManager`** — use `hmLinux` (e.g., `xdg.mimeApps`, GTK/Qt, loupe/zathura)
+- **Linux-only packages in `homeManager`** — packages like `loupe` that have Linux-only deps must go in `hmLinux`, not `homeManager`
+- **Aspects in `defaults.nix`** — defaults should only contain `den.provides.*` infrastructure, not aspects
+- **New files not visible** — nix flakes only see git-tracked files; `git add` first
+- **Hardware files** — must live outside `modules/` (e.g., `hardware/`) since import-tree loads everything as flake-parts modules
+- **`darwinConfigurations` option** — defined in `den.nix` because flake-parts doesn't provide it

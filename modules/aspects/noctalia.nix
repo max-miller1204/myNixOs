@@ -8,7 +8,7 @@
       ];
     };
 
-    homeManager = { ... }: {
+    provides.to-users.homeManager = { ... }: {
       xdg.configFile."noctalia/settings.json".source = ./noctalia/settings.json;
     };
   };

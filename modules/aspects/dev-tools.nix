@@ -1,15 +1,20 @@
 { self, inputs, ... }: {
   den.aspects.dev-tools = {
-    nixos = { pkgs, ... }: {
-      environment.systemPackages = with pkgs; [
-        codex
+    homeManager = { pkgs, ... }: {
+      home.packages = with pkgs; [
         nodejs
-        vscode
         gh
         jq
         ripgrep
         tree
         just
+      ];
+    };
+
+    hmLinux = { pkgs, ... }: {
+      home.packages = with pkgs; [
+        codex
+        vscode
       ];
     };
   };

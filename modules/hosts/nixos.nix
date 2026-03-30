@@ -1,6 +1,8 @@
 { den, ... }: {
-  den.aspects.my-machine = {
+  den.aspects.nixos = {
     includes = [
+      den.aspects.nix-settings
+      den.aspects.overlays
       den.aspects.niri
       den.aspects.noctalia
       den.aspects.greetd
@@ -10,10 +12,6 @@
       den.aspects.printing
       den.aspects.zram
       den.aspects.thunar
-      den.aspects.browsers
-      den.aspects.media
-      den.aspects.utilities
-      den.aspects.nh
       den.aspects.fingerprint
     ];
 
@@ -27,7 +25,6 @@
       boot.kernelPackages = pkgs.linuxPackages_latest;
 
       # Networking
-      networking.hostName = "nixos";
       networking.networkmanager.enable = true;
 
       # Timezone and locale
@@ -43,23 +40,6 @@
         LC_PAPER = locale;
         LC_TELEPHONE = locale;
         LC_TIME = locale;
-      };
-
-      # Nix settings
-      nix.settings.experimental-features = [ "nix-command" "flakes" ];
-      nix.gc = {
-        automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 7d";
-      };
-      nix.settings.auto-optimise-store = true;
-      nixpkgs.config.allowUnfree = true;
-
-      # User
-      users.users.max = {
-        isNormalUser = true;
-        description = "max";
-        extraGroups = [ "networkmanager" "wheel" ];
       };
 
       # SSH askpass
