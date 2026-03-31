@@ -9,7 +9,7 @@
           init.defaultBranch = "main";
           push.autoSetupRemote = true;
           pull.rebase = true;
-          credential."https://github.com".helper = "${pkgs.gh}/bin/gh auth git-credential";
+          credential."https://github.com".helper = "!gh auth git-credential";
         };
       };
     };
