@@ -9,7 +9,7 @@
       services.tumbler.enable = true;
     };
 
-    provides.to-users.homeManager = { ... }: {
+    homeManager = { ... }: {
       xdg.mimeApps.defaultApplications = {
         "inode/directory" = [ "thunar.desktop" ];
       };
