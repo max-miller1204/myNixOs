@@ -6,7 +6,6 @@ window-rule {
 spawn-at-startup "noctalia-shell"
 
 output "DP-3" {
-  focus-at-startup
   position x=1755 y=0
 }
 
