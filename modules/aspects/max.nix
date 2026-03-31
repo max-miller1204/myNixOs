@@ -11,6 +11,8 @@
       den.aspects.media
       den.aspects.browsers
       den.aspects.catppuccin
+      den.aspects.aerospace
+      den.aspects.karabiner
       den.aspects.hmPlatforms
       den.provides.primary-user
       (den.provides.user-shell "fish")

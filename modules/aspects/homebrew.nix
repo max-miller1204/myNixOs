@@ -8,11 +8,33 @@
           upgrade = true;
           cleanup = "none";
         };
-        brews = [];
+        brews = [
+          "cosign"
+          "direnv"
+          "fastfetch"
+          "llama.cpp"
+          "mise"
+          "podman"
+          "poppler"
+          "uv"
+        ];
         casks = [
-          "visual-studio-code"
-          "claude"
+          "aerospace"
           "antigravity"
+          "balenaetcher"
+          "claude"
+          "claude-code"
+          "codex"
+          "font-jetbrains-mono-nerd-font"
+          "karabiner-elements"
+          "macdown-3000"
+          "neovide-app"
+          "pearcleaner"
+          "raycast"
+          "spotify"
+          "utm"
+          "visual-studio-code"
+          "zed"
         ];
       };
     };
