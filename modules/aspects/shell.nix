@@ -4,6 +4,7 @@
       programs.fish = {
         enable = true;
         interactiveShellInit = ''
+          fish_add_path --prepend /opt/homebrew/bin
           set -g fish_greeting
           pfetch
         '';

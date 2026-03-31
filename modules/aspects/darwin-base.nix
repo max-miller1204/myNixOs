@@ -1,6 +1,7 @@
 { self, inputs, ... }: {
   den.aspects.darwin-base = {
     darwin = { pkgs, ... }: {
+      environment.shells = [ pkgs.fish ];
       # Trackpad
       system.defaults.trackpad.Clicking = true;
       system.defaults.trackpad.TrackpadThreeFingerDrag = true;
