@@ -15,6 +15,12 @@
         dates = "weekly";
         options = "--delete-older-than 7d";
       };
+
+      # Keep /tmp tidy: wipe on boot and remove files older than 7 days.
+      boot.tmp.cleanOnBoot = true;
+      systemd.tmpfiles.rules = [
+        "d /tmp 1777 root root 7d -"
+      ];
     };
 
     darwin = { ... }: {
