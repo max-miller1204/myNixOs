@@ -35,6 +35,7 @@
           "utm"
           "visual-studio-code"
           "zed"
+          "copilot-cli"
         ];
       };
     };
