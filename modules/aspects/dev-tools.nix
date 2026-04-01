@@ -13,7 +13,6 @@
 
     hmLinux = { pkgs, ... }: {
       home.packages = with pkgs; [
-        codex
         vscode
       ];
     };

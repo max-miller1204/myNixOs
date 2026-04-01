@@ -35,6 +35,10 @@
       };
       home.file.".claude/commands".source = ./claude/commands;
       home.file.".claude/skills/nix/SKILL.md".source = ./claude/skills/nix/SKILL.md;
+
+      # Codex skills
+      home.file.".codex/skills/deep-spec-interviewer".source =
+        ./codex/skills/deep-spec-interviewer;
     };
   };
 }
