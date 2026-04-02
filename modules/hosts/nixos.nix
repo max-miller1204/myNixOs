@@ -15,7 +15,7 @@
       den.aspects.fingerprint
     ];
 
-    nixos = { config, pkgs, ... }: {
+    nixos = { pkgs, ... }: {
       imports = [ ../../hardware/my-machine.nix ];
 
       # Boot

@@ -1,0 +1,9 @@
+{
+  "pid": 92122,
+  "started_at": "2026-04-02T01:47:54.547Z",
+  "cwd": "/home/max/myNixOS",
+  "notify_script": "/nix/store/f4kgwfh4nlm210rdin90iad65z8ihsc9-oh-my-codex-0.3.9/lib/node_modules/oh-my-codex/scripts/notify-hook.js",
+  "poll_ms": 700,
+  "tracked_files": 0,
+  "seen_turns": 0
+}
