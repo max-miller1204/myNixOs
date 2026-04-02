@@ -3,6 +3,8 @@
     homeManager = { pkgs, ... }: {
       home.packages = with pkgs; [
         nodejs
+        cargo
+        rustc
         gh
         jq
         ripgrep

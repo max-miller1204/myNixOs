@@ -18,6 +18,17 @@
         oh-my-codex
         oh-my-openagent
       ];
+
+      # Run omx-activate as user after rebuild (only triggers on version change)
+      system.activationScripts.omx-activate = {
+        text = ''
+          if [ -x "${pkgs.oh-my-codex}/bin/omx-activate" ]; then
+            ${pkgs.sudo}/bin/sudo -u max \
+              HOME=/home/max \
+              ${pkgs.oh-my-codex}/bin/omx-activate || true
+          fi
+        '';
+      };
     };
   };
 }
