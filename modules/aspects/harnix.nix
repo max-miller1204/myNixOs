@@ -1,9 +1,9 @@
 { self, inputs, ... }: {
-  den.aspects.npm-globals = {
+  den.aspects.harnix = {
     homeManager = { ... }: {
-      imports = [ inputs.nix-npm-globals.homeManagerModules.default ];
+      imports = [ inputs.harnix.homeManagerModules.default ];
 
-      programs.npm-globals = {
+      programs.harnix = {
         enable = true;
 
         # Add packages here. Version pinning supported:
@@ -13,7 +13,7 @@
         npmPackages = [
           # "@anthropic-ai/claude-code"
           # "@mariozechner/pi-coding-agent"
-          # "gsd-pi"
+          "gsd-pi"
         ];
 
         bunPackages = [
