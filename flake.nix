@@ -29,8 +29,11 @@
     antigravity-nix.url = "github:jacopone/antigravity-nix";
     claude-code.url = "github:sadjow/claude-code-nix";
     youtube-mcp-server.url = "github:max-miller1204/youtube-mcp-server-nix";
+    opencode-nix.url = "github:max-miller1204/opencode-nix";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     copilot-cli-nix.url = "github:max-miller1204/copilot-cli-nix";
+    oh-my-codex-nix.url = "github:max-miller1204/oh-my-codex-nix";
+    oh-my-openagent-nix.url = "github:max-miller1204/oh-my-openagent-nix";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake
