@@ -1,4 +1,0 @@
-interface:
-  display_name: "Deep Spec Interviewer"
-  short_description: "Interrogate deeply, then write the spec"
-  default_prompt: "Use $deep-spec-interviewer to read $1, run a non-obvious assumption-challenging interview, then write the spec and implementation approach."
