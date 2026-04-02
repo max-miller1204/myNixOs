@@ -112,69 +112,6 @@
           $DRY_RUN_CMD mv "$CODEX_CONFIG.tmp" "$CODEX_CONFIG"
         '';
 
-      # Migrate deprecated Codex feature flag: [features].collab -> [features].multi_agent
-      home.activation.migrateCodexFeatureFlags =
-        config.lib.dag.entryAfter [ "syncCodexMcpServers" ] ''
-          CODEX_CONFIG="$HOME/.codex/config.toml"
-
-          if [ -f "$CODEX_CONFIG" ]; then
-            ${pkgs.gawk}/bin/awk '
-              BEGIN {
-                in_features = 0
-                saw_collab = 0
-                saw_multi_agent = 0
-                collab_value = "true"
-              }
-
-              /^\[features\]$/ {
-                in_features = 1
-                print
-                next
-              }
-
-              /^\[/ {
-                if (in_features && saw_collab && !saw_multi_agent) {
-                  print "multi_agent = " collab_value
-                }
-                in_features = 0
-                saw_collab = 0
-                saw_multi_agent = 0
-                collab_value = "true"
-                print
-                next
-              }
-
-              {
-                if (in_features) {
-                  if ($0 ~ /^collab[[:space:]]*=/) {
-                    saw_collab = 1
-                    split($0, parts, "=")
-                    value = parts[2]
-                    gsub(/^[[:space:]]+|[[:space:]]+$/, "", value)
-                    if (value != "") {
-                      collab_value = value
-                    }
-                    next
-                  }
-
-                  if ($0 ~ /^multi_agent[[:space:]]*=/) {
-                    saw_multi_agent = 1
-                  }
-                }
-
-                print
-              }
-
-              END {
-                if (in_features && saw_collab && !saw_multi_agent) {
-                  print "multi_agent = " collab_value
-                }
-              }
-            ' "$CODEX_CONFIG" > "$CODEX_CONFIG.tmp"
-
-            $DRY_RUN_CMD mv "$CODEX_CONFIG.tmp" "$CODEX_CONFIG"
-          fi
-        '';
     };
   };
 }
