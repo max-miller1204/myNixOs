@@ -118,11 +118,11 @@
     },
     "den": {
       "locked": {
-        "lastModified": 1775107442,
-        "narHash": "sha256-ScuYEFjhoHTNiOJjMJses8fCUy2Jl57EKkJfY01ORB4=",
+        "lastModified": 1775139145,
+        "narHash": "sha256-HOQ377FPcMTWMDhxflSENyO8gsxltSdRFIWipHlxn3E=",
         "owner": "vic",
         "repo": "den",
-        "rev": "afc9ac0bfda56dc03738126f0733953f34c9dafb",
+        "rev": "ec6566dc4e861f190c3c5c872e9d50693a8035c1",
         "type": "github"
       },
       "original": {
@@ -300,11 +300,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775104157,
-        "narHash": "sha256-rm/7k0D2J9SP30pyZ2C1HqarDncZDN6KAUI0gzgg4TA=",
+        "lastModified": 1775139622,
+        "narHash": "sha256-/qfz8ZdwLuaO11ApSUsrgKQJVP/RehKo2u7YMfF4LCw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "41e6e2ab37763c09db4e639033392cf40900440a",
+        "rev": "eb6f347055769a23967dda70cdc8b46f7d247ab9",
         "type": "github"
       },
       "original": {
@@ -512,11 +512,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1775131645,
-        "narHash": "sha256-+L6wYy7jHXYk638FmMvn9L9uUpRwYjYJ0wfCUmHHwh8=",
+        "lastModified": 1775140500,
+        "narHash": "sha256-yHeKMhJsMgIguMq/UAEd9Ww6dd13j8H4IoFQExuHWLQ=",
         "owner": "max-miller1204",
         "repo": "oh-my-openagent-nix",
-        "rev": "764b0cef49ef3e459978d905a572f5c8bbe8cd89",
+        "rev": "44659683b0eaae1a4f9496b03b0571dd0913412d",
         "type": "github"
       },
       "original": {
