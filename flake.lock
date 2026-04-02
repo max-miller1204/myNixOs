@@ -295,14 +295,17 @@
     },
     "harnix": {
       "locked": {
-        "lastModified": 1775153322,
-        "narHash": "sha256-oiQ/VCjd1r6aKMrsCJzWGHmWe7Ww/1KGWWwqcgW3Y7c=",
-        "path": "/home/max/harnix",
-        "type": "path"
+        "lastModified": 1775153779,
+        "narHash": "sha256-MrEz+W7pytr/BpiD/AzgRnHsR08PnNpX9PIkmKqYeWM=",
+        "owner": "max-miller1204",
+        "repo": "harnix",
+        "rev": "965b54fbe714218b9b73c1921f32015b97eb9089",
+        "type": "github"
       },
       "original": {
-        "path": "/home/max/harnix",
-        "type": "path"
+        "owner": "max-miller1204",
+        "repo": "harnix",
+        "type": "github"
       }
     },
     "home-manager": {
