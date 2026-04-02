@@ -328,6 +328,18 @@
         "type": "github"
       }
     },
+    "nix-npm-globals": {
+      "locked": {
+        "lastModified": 1775151463,
+        "narHash": "sha256-DLyu69CvKJjgl2TaWnRbKXQdjrJrftd+bP3bNTXCg1c=",
+        "path": "/home/max/nix-npm-globals",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/max/nix-npm-globals",
+        "type": "path"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1763421233,
@@ -556,6 +568,7 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
+        "nix-npm-globals": "nix-npm-globals",
         "nixpkgs": "nixpkgs_5",
         "oh-my-codex-nix": "oh-my-codex-nix",
         "oh-my-openagent-nix": "oh-my-openagent-nix",

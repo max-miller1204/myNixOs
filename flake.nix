@@ -34,6 +34,7 @@
     copilot-cli-nix.url = "github:max-miller1204/copilot-cli-nix";
     oh-my-codex-nix.url = "github:max-miller1204/oh-my-codex-nix";
     oh-my-openagent-nix.url = "github:max-miller1204/oh-my-openagent-nix";
+    nix-npm-globals.url = "github:max-miller1204/nix-npm-globals";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake

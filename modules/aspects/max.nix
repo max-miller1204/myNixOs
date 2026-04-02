@@ -6,6 +6,7 @@
       den.aspects.vim
       den.aspects.alacritty
       den.aspects.dev-tools
+      den.aspects.npm-globals
       den.aspects.mcp
       den.aspects.utilities
       den.aspects.media
