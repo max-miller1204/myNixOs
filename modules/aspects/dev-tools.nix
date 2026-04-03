@@ -7,6 +7,7 @@
         rustc
         gh
         jq
+        nixd
         ripgrep
         tree
         just

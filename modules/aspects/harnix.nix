@@ -18,7 +18,7 @@
         ];
 
         bunPackages = [
-          "oh-my-openagent"
+          "oh-my-opencode"
         ];
       };
     };
