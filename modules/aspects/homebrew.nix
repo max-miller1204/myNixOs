@@ -23,7 +23,7 @@
           "antigravity"
           "balenaetcher"
           "claude"
-          "claude-code"
+          "claude-code@latest"
           "codex"
           "font-jetbrains-mono-nerd-font"
           "karabiner-elements"

@@ -13,7 +13,6 @@
       den.aspects.zram
       den.aspects.thunar
       den.aspects.fingerprint
-      den.aspects.omx-activate
     ];
 
     nixos = { pkgs, ... }: {

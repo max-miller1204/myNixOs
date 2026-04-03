@@ -34,7 +34,7 @@
         source = ./claude/statusline.sh;
         executable = true;
       };
-      home.file.".claude/commands".source = ./claude/commands;
+      home.file.".claude/skills/spec".source = ./claude/skills/spec;
       home.file.".claude/skills/nix/SKILL.md".source = ./claude/skills/nix/SKILL.md;
 
       # OpenCode / oh-my-openagent config

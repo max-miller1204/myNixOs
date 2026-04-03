@@ -13,11 +13,12 @@
         npmPackages = [
           # "@anthropic-ai/claude-code"
           # "@mariozechner/pi-coding-agent"
+          "oh-my-codex"
           "gsd-pi"
         ];
 
         bunPackages = [
-          # Add bun global packages here
+          "oh-my-openagent"
         ];
       };
     };

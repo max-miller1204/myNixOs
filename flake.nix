@@ -32,8 +32,6 @@
     opencode-nix.url = "github:max-miller1204/opencode-nix";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     copilot-cli-nix.url = "github:max-miller1204/copilot-cli-nix";
-    oh-my-codex-nix.url = "github:max-miller1204/oh-my-codex-nix";
-    oh-my-openagent-nix.url = "github:max-miller1204/oh-my-openagent-nix";
     harnix.url = "github:max-miller1204/harnix";
   };
 
