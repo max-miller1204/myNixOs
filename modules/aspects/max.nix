@@ -21,6 +21,7 @@
 
     hmLinux = { ... }: {
       xdg.mimeApps.enable = true;
+      xdg.configFile."noctalia/settings.json".source = ./noctalia/settings.json;
     };
 
     homeManager = { config, pkgs, ... }: {
