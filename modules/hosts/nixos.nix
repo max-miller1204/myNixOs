@@ -51,6 +51,10 @@
         LC_TIME = locale;
       };
 
+      # GNOME Keyring - auto-unlock at login via PAM
+      services.gnome.gnome-keyring.enable = true;
+      security.pam.services.greetd.enableGnomeKeyring = true;
+
       # SSH askpass
       programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
       environment.sessionVariables.SUDO_ASKPASS = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
