@@ -353,7 +353,7 @@
         "allowPasswordWithFprintd": false,
         "animationDisabled": false,
         "animationSpeed": 1,
-        "autoStartAuth": false,
+        "autoStartAuth": true,
         "avatarImage": "/home/max/.face",
         "boxRadiusRatio": 1,
         "clockFormat": "hh\\nmm",

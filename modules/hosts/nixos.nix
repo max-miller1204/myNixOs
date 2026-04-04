@@ -4,6 +4,7 @@
       den.aspects.nix-settings
       den.aspects.overlays
       den.aspects.niri
+      den.aspects.flatpak
       den.aspects.noctalia
       den.aspects.greetd
       den.aspects.nvidia
@@ -28,7 +29,12 @@
       networking.networkmanager.enable = true;
 
       # Run generic dynamically linked Linux binaries.
-      programs.nix-ld.enable = true;
+      programs.nix-ld = {
+        enable = true;
+        libraries = with pkgs; [
+          zlib
+        ];
+      };
 
       # Timezone and locale
       time.timeZone = "America/New_York";

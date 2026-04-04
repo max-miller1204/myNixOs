@@ -4,6 +4,7 @@
       home.packages = with pkgs; [
         nodejs
         cargo
+        gcc
         rustc
         gh
         jq

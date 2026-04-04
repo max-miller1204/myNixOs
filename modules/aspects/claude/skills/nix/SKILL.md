@@ -95,6 +95,7 @@ Infrastructure in `defaults.nix` and user includes:
 - `den.provides.primary-user` — admin user (wheel group)
 - `(den.provides.user-shell "fish")` — login shell on all platforms
 - `den._.mutual-provider` — host↔user bidirectional config
+- `den.aspects.hmPlatforms` — defined in `schema.nix`; uses `den._.forward` to create the `hmLinux`/`hmDarwin` class keys by forwarding them into `homeManager` with platform guards (`mkIf stdenv.isLinux`/`isDarwin`). Must be in a user's `includes` for those class keys to work.
 
 User creation is handled by den provides — don't manually declare `users.users.*` in host aspects.
 
@@ -111,7 +112,7 @@ User creation is handled by den provides — don't manually declare `users.users
 | `modules/hosts/ci-linux.nix` | CI host (minimal, self-contained) |
 | `modules/hosts/ci-darwin.nix` | CI host (minimal, self-contained) |
 | `modules/aspects/max.nix` | User aspect (includes all user features) |
-| `modules/aspects/*.nix` | Feature aspects |
+| `modules/aspects/*.nix` | Feature aspects (shell, git, vim, alacritty, dev-tools, harnix, mcp, utilities, media, browsers, catppuccin, aerospace, karabiner, flatpak) |
 | `hardware/my-machine.nix` | Hardware config (outside modules/) |
 | `.github/workflows/build.yaml` | CI pipeline |
 | `docs/den.md` | Detailed guide — read for how-tos |
@@ -157,6 +158,8 @@ just check     # validate flake
 just update    # update all inputs
 just gc        # garbage collect
 just diff      # show changes with nvd
+just rekey     # re-encrypt secrets after key changes
+just edit-secret NAME  # edit a specific secret file
 ```
 
 ## Common Pitfalls

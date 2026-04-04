@@ -12,6 +12,7 @@
         anki
         bubblewrap
         unzip
+        discord
       ];
     };
   };
