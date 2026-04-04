@@ -5,3 +5,4 @@ result
 # Local Codex/OMX state
 .codex
 .omx/
+.bg-shell/

@@ -259,11 +259,11 @@
     },
     "harnix": {
       "locked": {
-        "lastModified": 1775232659,
-        "narHash": "sha256-kFzO1t79gjl3odQsezrpR1BjhDlGhTIi7k9AIWZLajg=",
+        "lastModified": 1775344792,
+        "narHash": "sha256-iFRjX+Jmi0Vfi2E5LReiZqAHxcmj3gc9P37PGhnx3LA=",
         "owner": "max-miller1204",
         "repo": "harnix",
-        "rev": "17293dfed838960a9e0778060c1d3a8db411d770",
+        "rev": "3d0c37cfac4312191a91fe25dabb0a38ac559529",
         "type": "github"
       },
       "original": {
@@ -440,11 +440,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1775331035,
-        "narHash": "sha256-3L+5Ka8KtAPsIxaQVcTH0+7DV61s9+lYUUyuQLDx7Xk=",
+        "lastModified": 1775338211,
+        "narHash": "sha256-KY59PpeMppewAYVJHO9g7+pTJz8JDA1FcwtidLnFXDQ=",
         "owner": "max-miller1204",
         "repo": "opencode-nix",
-        "rev": "38dea48afadca6e45024f63ebb4cadca3be76dd8",
+        "rev": "e025bd7d75c6fadf6c9bd1fba99e682cbb8ce972",
         "type": "github"
       },
       "original": {

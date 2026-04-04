@@ -14,7 +14,7 @@
           # "@anthropic-ai/claude-code"
           # "@mariozechner/pi-coding-agent"
           "oh-my-codex"
-          "gsd-pi"
+          "gsd-pi@latest"
         ];
 
         bunPackages = [
