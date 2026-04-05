@@ -38,7 +38,8 @@
       home.file.".claude/skills/spec".source = ./claude/skills/spec;
       home.file.".claude/skills/nix/SKILL.md".source = ./claude/skills/nix/SKILL.md;
 
-      # OpenCode / oh-my-opencode config (opencode.json managed by the plugin)
+      # OpenCode / oh-my-opencode config
+      home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
       home.file.".config/opencode/oh-my-opencode.json".source = ./opencode/oh-my-opencode.json;
     };
   };
