@@ -259,11 +259,11 @@
     },
     "harnix": {
       "locked": {
-        "lastModified": 1775417370,
-        "narHash": "sha256-JF0RbrGT8dI1pPKkNDBNn9+2mvnecBN+miMKh5pp1o8=",
+        "lastModified": 1775419674,
+        "narHash": "sha256-qTq4yIPD3C7v3sGcR4DWlEoRybU7S19RVkCTyW+6EUQ=",
         "owner": "max-miller1204",
         "repo": "harnix",
-        "rev": "e8354b947ac57adb7ee8f18a8d3170dc201dda1f",
+        "rev": "0b25ed345e1bac2d8e7e141cd65e5f1295e6e9ca",
         "type": "github"
       },
       "original": {
