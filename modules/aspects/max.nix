@@ -6,6 +6,7 @@
       den.aspects.vim
       den.aspects.alacritty
       den.aspects.dev-tools
+      den.aspects.tmux
       den.aspects.harnix
       den.aspects.handy
       den.aspects.mcp

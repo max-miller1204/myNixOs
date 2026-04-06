@@ -19,6 +19,7 @@
           gp = "git push";
           gl = "git log --oneline";
           rebuild = "just switch";
+          tmux-help = "bat ~/.config/tmux/cheatsheet.md";
         };
       };
 

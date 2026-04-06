@@ -15,10 +15,12 @@
           # "@mariozechner/pi-coding-agent"
           "oh-my-codex"
           "gsd-pi@latest"
+          "dmux"
         ];
 
         bunPackages = [
-          "oh-my-opencode"
+          "oh-my-opencode-slim@latest --reset --no-tui --tmux=yes --skills=yes"
+          "ruflo@latest"
         ];
       };
     };

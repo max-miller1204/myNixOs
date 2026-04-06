@@ -549,11 +549,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1775453000,
-        "narHash": "sha256-n4iq36KlZm/mDM4SebRs/CxjRj2HTDiGmBMXNaINdvg=",
+        "lastModified": 1775472953,
+        "narHash": "sha256-WM4QgZOv6SWDcHWIIneM8eQL7+/I2Hv77FXOZXqj6/w=",
         "owner": "max-miller1204",
         "repo": "opencode-nix",
-        "rev": "b3c7102f5c4518576aa363e879166472d973d47f",
+        "rev": "4ac8a51df22f49e34a463e9b298fdcd7093f0701",
         "type": "github"
       },
       "original": {

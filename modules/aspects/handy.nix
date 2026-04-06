@@ -10,10 +10,13 @@
       users.users.max.extraGroups = [ "input" ];
     };
 
-    homeManager = { ... }: {
+    homeManager = { lib, ... }: {
       imports = [ inputs.handy.homeManagerModules.default ];
 
-      services.handy.enable = true;
+      # Handy is spawned at startup by Niri with --start-hidden.
+      # The systemd service conflicts: on switch it hits the single-instance
+      # plugin which doesn't handle --start-hidden and pops the GUI.
+      services.handy.enable = false;
     };
 
     # Wayland runtime tools for clipboard and paste simulation

@@ -4,6 +4,7 @@ window-rule {
 }
 
 spawn-at-startup "noctalia-shell"
+spawn-at-startup "handy" "--start-hidden"
 
 output "DP-3" {
   position x=1755 y=0
