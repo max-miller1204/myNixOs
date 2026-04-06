@@ -33,6 +33,7 @@
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     copilot-cli-nix.url = "github:max-miller1204/copilot-cli-nix";
     harnix.url = "github:max-miller1204/harnix";
+    handy.url = "github:cjpais/Handy";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake

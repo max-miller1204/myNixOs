@@ -7,6 +7,7 @@
       den.aspects.alacritty
       den.aspects.dev-tools
       den.aspects.harnix
+      den.aspects.handy
       den.aspects.mcp
       den.aspects.utilities
       den.aspects.media
@@ -37,10 +38,6 @@
       };
       home.file.".claude/skills/spec".source = ./claude/skills/spec;
       home.file.".claude/skills/nix/SKILL.md".source = ./claude/skills/nix/SKILL.md;
-
-      # OpenCode / oh-my-opencode config
-      home.file.".config/opencode/opencode.json".source = ./opencode/opencode.json;
-      home.file.".config/opencode/oh-my-opencode.json".source = ./opencode/oh-my-opencode.json;
     };
   };
 }

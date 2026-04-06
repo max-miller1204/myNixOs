@@ -15,7 +15,7 @@
       }
     }
   },
-  "voiceEnabled": true,
+  "voiceEnabled": false,
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true
 }

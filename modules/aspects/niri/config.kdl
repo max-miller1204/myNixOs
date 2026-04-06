@@ -38,6 +38,9 @@ binds {
   Mod+Return { spawn "alacritty"; }
   Mod+Space { spawn-sh "noctalia-shell ipc call launcher toggle"; }
 
+  // Speech-to-text
+  Ctrl+Space { spawn "handy" "--toggle-transcription"; }
+
   // Hotkey overlay
   Mod+Shift+Slash { show-hotkey-overlay; }
 
