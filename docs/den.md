@@ -77,11 +77,12 @@ modules/
 │   ├── max.nix          # user config (includes all user-facing aspects)
 │   │
 │   │── # User aspects (homeManager — cross-platform)
-│   ├── shell.nix        # fish, starship, atuin, bat, fzf, zoxide
-│   ├── git.nix          # git config
-│   ├── vim.nix          # vim + catppuccin
+│   ├── shell.nix        # fish, starship, atuin, bat, fzf, zoxide + fish functions + eza/git/claude aliases
+│   ├── git.nix          # git config + histogram diffs, rerere, aliases (sync/co/br/ci/st)
+│   ├── vim.nix          # vim + catppuccin (neovim in dev-tools, LazyVim managed externally)
+│   ├── tmux.nix         # tmux + omarchy-style keybindings (Ctrl-a, prefix-free nav)
 │   ├── alacritty.nix    # terminal
-│   ├── dev-tools.nix    # nodejs, gh, jq, ripgrep (homeManager) + codex, vscode (hmLinux)
+│   ├── dev-tools.nix    # neovim, nodejs, gh, jq, ripgrep, eza, fd, lazygit, dust, fastfetch, gum (HM) + vscode (hmLinux)
 │   ├── mcp.nix          # Claude MCP servers + sops secrets
 │   │
 │   │── # Host aspects (system-level)
@@ -270,7 +271,9 @@ den.aspects.nix-settings = {
 | Config type | Where | Example |
 |-------------|-------|---------|
 | User CLI tools | `homeManager.home.packages` in user aspect | dev-tools.nix |
-| User dotfiles | `homeManager.programs.*` in user aspect | git.nix, vim.nix |
+| User dotfiles | `homeManager.programs.*` in user aspect | git.nix, vim.nix, tmux.nix |
+| Shell functions | `homeManager.programs.fish.functions` | shell.nix (ga, gd, tdl, tsl, etc.) |
+| Shell aliases | `homeManager.programs.fish.shellAliases` | shell.nix |
 | Linux-only user tools | `hmLinux.home.packages` in user aspect | loupe, zathura, vscode |
 | Linux-only user config | `hmLinux` in user aspect | xdg.mimeApps, GTK/Qt theming |
 | macOS user apps | `homebrew.casks` | homebrew.nix |

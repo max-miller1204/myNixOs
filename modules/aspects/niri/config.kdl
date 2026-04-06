@@ -4,7 +4,6 @@ window-rule {
 }
 
 spawn-at-startup "noctalia-shell"
-spawn-at-startup "handy" "--start-hidden"
 
 output "DP-3" {
   position x=1755 y=0
@@ -40,7 +39,7 @@ binds {
   Mod+Space { spawn-sh "noctalia-shell ipc call launcher toggle"; }
 
   // Speech-to-text
-  Ctrl+Space { spawn "handy" "--toggle-transcription"; }
+  Ctrl+Space { spawn "stt" "toggle"; }
 
   // Hotkey overlay
   Mod+Shift+Slash { show-hotkey-overlay; }

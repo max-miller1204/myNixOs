@@ -8,7 +8,6 @@
       den.aspects.dev-tools
       den.aspects.tmux
       den.aspects.harnix
-      den.aspects.handy
       den.aspects.mcp
       den.aspects.utilities
       den.aspects.media

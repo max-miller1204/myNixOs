@@ -7,11 +7,12 @@ Reusable den aspects. Each `.nix` file defines `den.aspects.<name>` with class-k
 ```
 aspects/
 ├── max.nix              # User aspect aggregator — includes all user-facing aspects
-├── shell.nix            # fish, starship, atuin, bat, fzf, zoxide
-├── git.nix              # Git config + credential helper
-├── vim.nix              # Vim + catppuccin theme
+├── shell.nix            # fish, starship, atuin, bat, fzf, zoxide + fish functions (worktrees, tmux layouts, SSH forwarding, utilities) + eza/docker/git/claude aliases
+├── git.nix              # Git config + credential helper + histogram diffs, rerere, aliases (sync/co/br/ci/st)
+├── vim.nix              # Vim + catppuccin theme (neovim is in dev-tools, LazyVim managed externally)
+├── tmux.nix             # Tmux with omarchy-style keybindings (Ctrl-a prefix, prefix-free pane/window nav)
 ├── alacritty.nix        # Terminal emulator
-├── dev-tools.nix        # nodejs, gh, jq, ripgrep (HM) + codex, vscode (hmLinux)
+├── dev-tools.nix        # neovim, nodejs, gh, jq, ripgrep, eza, fd, lazygit, dust, fastfetch, gum (HM) + vscode (hmLinux)
 ├── mcp.nix              # MCP servers + sops secrets + activation scripts (117 lines)
 ├── harnix.nix           # Harnix HM module integration
 ├── utilities.nix        # nvd, pfetch (HM) + anki, bubblewrap (hmLinux)
@@ -59,6 +60,10 @@ aspects/
 | Include aspect for user | `max.nix` → `includes` list | n/a |
 | Include aspect for NixOS host | `../hosts/nixos.nix` → `includes` | n/a |
 | Include aspect for macOS host | `../hosts/my-macbook.nix` → `includes` | n/a |
+| Add shell function | `shell.nix` → `programs.fish.functions` | `homeManager` |
+| Add shell alias | `shell.nix` → `programs.fish.shellAliases` | `homeManager` |
+| Modify tmux keybindings | `tmux.nix` → `extraConfig` | `homeManager` |
+| Modify git settings | `git.nix` → `programs.git.settings` | `homeManager` |
 
 ## CONVENTIONS
 
@@ -68,6 +73,7 @@ aspects/
 - Host aspects are NOT here — they live in `../hosts/`.
 - Non-Nix assets live in subdirectories named after the aspect (e.g., `niri/config.kdl`).
 - `mcp.nix` is the most complex file (117 lines) — contains inline shell scripts, sops secrets, activation hooks, and TOML generation.
+- Neovim is installed as a package in `dev-tools.nix`. LazyVim manages plugins externally in `~/.config/nvim` (not Nix-managed).
 
 ## ANTI-PATTERNS
 

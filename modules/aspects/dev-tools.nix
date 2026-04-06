@@ -12,6 +12,13 @@
         ripgrep
         tree
         just
+        neovim
+        gum
+        eza
+        fd
+        lazygit
+        dust
+        fastfetch
       ];
     };
 

@@ -1,7 +1,6 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-04-04
-**Commit:** 24dd3b3
+**Generated:** 2026-04-06
 **Branch:** main
 
 ## OVERVIEW
@@ -57,6 +56,57 @@ NixOS + nix-darwin personal config using flake-parts, import-tree, and den (aspe
 - **Fish** is the default shell (`den.provides.user-shell "fish"`).
 - **Catppuccin mocha/mauve** is the standard theme.
 - **State versions**: NixOS/HM = `25.11`, darwin = `6`.
+- **Neovim** — installed via dev-tools.nix as a package. LazyVim manages plugins externally in `~/.config/nvim` (not Nix-managed).
+
+## SHELL FUNCTIONS & ALIASES
+
+### Tmux Layout Functions (Fish, in `shell.nix`)
+- `tdl <ai> [ai2]` — Dev layout: editor (70%) + AI pane (30%) + terminal (15% bottom). E.g. `tdl claude`
+- `tdlm <ai> [ai2]` — Multi-project: one `tdl` window per subdirectory
+- `tsl <count> <cmd>` — Swarm: N tiled panes all running the same command. E.g. `tsl 3 claude`
+
+### Git Worktree Functions (Fish, in `shell.nix`)
+- `ga <branch>` — Create worktree at `../repo--branch/` and cd into it
+- `gd` — Delete current worktree + branch (with gum confirmation)
+
+### SSH Port Forwarding (Fish, in `shell.nix`)
+- `fip <host> <port1> [port2...]` — Forward ports via SSH
+- `dip <port1> [port2...]` — Disconnect port forwards
+- `lip` — List active port forwards
+
+### Utility Functions (Fish, in `shell.nix`)
+- `n [files]` — nvim wrapper (opens `.` with no args)
+- `ff` — fzf with bat preview
+- `eff` — edit fzf-selected file in $EDITOR
+- `sff <dest>` — find recent file via fzf, scp to destination
+- `open <file>` — xdg-open (backgrounded)
+- `compress <dir>` — tar.gz a directory
+
+### Key Aliases (Fish, in `shell.nix`)
+- `c`=claude, `cx`=claude (skip perms), `t`=tmux attach/new, `n`=nvim
+- `g`=git, `gs`=status, `gc`=commit, `gp`=push, `gl`=log, `gcm`=commit -m, `gcam`=commit -a -m
+- `ls`/`lsa`/`lt`/`lta` — eza with icons
+- `..`/`...`/`....` — parent directory navigation
+- `d`=docker, `rebuild`=just switch
+
+## TMUX KEYBINDINGS (in `tmux.nix`)
+
+Prefix: `Ctrl-a`. Vi copy mode. Mouse enabled. Catppuccin theme.
+
+- **Splits**: `h` (horizontal), `v` (vertical), `x` (kill pane)
+- **Pane nav**: `Ctrl+Alt+Arrow` (no prefix)
+- **Pane resize**: `Ctrl+Alt+Shift+Arrow` (no prefix)
+- **Windows**: `Alt+1-9` direct, `Alt+Left/Right` cycle, `Alt+Shift+Left/Right` swap
+- **Window mgmt**: `c` new, `k` kill, `r` rename
+- **Sessions**: `C` new, `K` kill, `P`/`N` prev/next, `R` rename, `Alt+Up/Down`
+- **Reload**: `q`
+
+## GIT CONFIG (in `git.nix`)
+
+- Rebase on pull, auto-setup remote, histogram diffs, colorMoved
+- Verbose commits (shows diff in editor), rerere (remembers conflict resolutions)
+- Branch sort by most recent, version-aware tag sort
+- Aliases: `sync`, `co`, `br`, `ci`, `st`
 
 ## ANTI-PATTERNS (THIS PROJECT)
 
