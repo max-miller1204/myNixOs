@@ -11,7 +11,8 @@ aspects/
 ├── git.nix              # Git config + credential helper + histogram diffs, rerere, aliases (sync/co/br/ci/st)
 ├── vim.nix              # Vim + catppuccin theme (neovim is in dev-tools, LazyVim managed externally)
 ├── tmux.nix             # Tmux with omarchy-style keybindings (Ctrl-a prefix, prefix-free pane/window nav)
-├── alacritty.nix        # Terminal emulator
+├── alacritty.nix        # Terminal emulator (inactive, replaced by ghostty)
+├── ghostty.nix          # Terminal emulator (active, kitty graphics protocol)
 ├── dev-tools.nix        # neovim, nodejs, gh, jq, ripgrep, eza, fd, lazygit, dust, fastfetch, gum (HM) + vscode (hmLinux)
 ├── mcp.nix              # MCP servers + sops secrets + activation scripts (117 lines)
 ├── harnix.nix           # Harnix HM module integration

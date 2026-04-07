@@ -4,7 +4,7 @@
       den.aspects.shell
       den.aspects.git
       den.aspects.vim
-      den.aspects.alacritty
+      den.aspects.ghostty
       den.aspects.dev-tools
       den.aspects.tmux
       den.aspects.harnix
@@ -23,6 +23,7 @@
     hmLinux = { ... }: {
       xdg.mimeApps.enable = true;
       xdg.configFile."noctalia/settings.json".source = ./noctalia/settings.json;
+      xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
     };
 
     homeManager = { config, pkgs, ... }: {
@@ -38,6 +39,7 @@
       };
       home.file.".claude/skills/spec".source = ./claude/skills/spec;
       home.file.".claude/skills/nix/SKILL.md".source = ./claude/skills/nix/SKILL.md;
+      home.file.".claude/plugins/lsp-servers/.claude-plugin/plugin.json".source = ./claude/lsp-servers/.claude-plugin/plugin.json;
     };
   };
 }

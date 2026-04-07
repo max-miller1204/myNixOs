@@ -18,8 +18,6 @@
       ];
     };
 
-    provides.to-users.homeManager = { ... }: {
-      xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
-    };
+    # config.kdl deployed via max.nix hmLinux (provides.to-users wasn't deploying)
   };
 }

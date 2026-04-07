@@ -86,7 +86,7 @@
           set -g detach-on-destroy off
           set -g set-titles on
           set -g set-titles-string "#S / #W"
-          set -sa terminal-features ',alacritty:RGB'
+          set -sa terminal-features ',xterm-ghostty:RGB'
 
           # Status bar
           set -g status-position top

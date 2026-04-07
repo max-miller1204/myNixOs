@@ -81,7 +81,8 @@ modules/
 │   ├── git.nix          # git config + histogram diffs, rerere, aliases (sync/co/br/ci/st)
 │   ├── vim.nix          # vim + catppuccin (neovim in dev-tools, LazyVim managed externally)
 │   ├── tmux.nix         # tmux + omarchy-style keybindings (Ctrl-a, prefix-free nav)
-│   ├── alacritty.nix    # terminal
+│   ├── ghostty.nix      # terminal (Ghostty, kitty graphics protocol)
+│   ├── alacritty.nix    # terminal (inactive, kept as fallback)
 │   ├── dev-tools.nix    # neovim, nodejs, gh, jq, ripgrep, eza, fd, lazygit, dust, fastfetch, gum (HM) + vscode (hmLinux)
 │   ├── mcp.nix          # Claude MCP servers + sops secrets
 │   │

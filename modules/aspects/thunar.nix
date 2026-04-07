@@ -14,7 +14,7 @@
         "inode/directory" = [ "thunar.desktop" ];
       };
       xdg.configFile."xfce4/helpers.rc".text = ''
-        TerminalEmulator=alacritty
+        TerminalEmulator=ghostty
         TerminalEmulatorDismissed=true
       '';
     };

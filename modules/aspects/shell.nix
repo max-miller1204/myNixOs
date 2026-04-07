@@ -11,6 +11,8 @@
           set -g fish_greeting
           pfetch
           set -gx BAT_THEME ansi
+          set -gx EDITOR nvim
+          set -gx VISUAL nvim
         '';
         shellAliases = {
           ll = "ls -la";
@@ -21,8 +23,8 @@
           gl = "git log --oneline";
           rebuild = "just switch";
           tmux-help = "bat ~/.config/tmux/cheatsheet.md";
-          c = "claude";
-          cx = "clear; claude --dangerously-skip-permissions";
+          c = "claude --plugin-dir ~/.claude/plugins/lsp-servers";
+          cx = "clear; claude --dangerously-skip-permissions --plugin-dir ~/.claude/plugins/lsp-servers";
           t = "tmux attach || tmux new -s Work";
           g = "git";
           gcm = "git commit -m";

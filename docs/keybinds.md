@@ -1,6 +1,6 @@
 # Keybinds & Shortcuts Reference
 
-Complete shortcut list across all layers: shell, tmux, git, niri window manager.
+Complete shortcut list across all layers: shell, tmux, git, and niri window manager.
 
 ---
 
@@ -99,6 +99,16 @@ Complete shortcut list across all layers: shell, tmux, git, niri window manager.
 | `Alt+Shift+Left` | Swap window left |
 | `Alt+Shift+Right` | Swap window right |
 
+### Session CLI Commands
+
+| Command | Action |
+|---------|--------|
+| `tmux ls` | List sessions |
+| `tmux new -s <name>` | New named session |
+| `tmux attach -t <name>` | Attach to session |
+| `tmux kill-session -t <name>` | Kill a specific session |
+| `tmux kill-session` | Kill current session |
+
 ### Session Management
 
 | Key | Action |
@@ -133,7 +143,7 @@ Complete shortcut list across all layers: shell, tmux, git, niri window manager.
 
 | Key | Action |
 |-----|--------|
-| `Mod+Return` | Terminal (Alacritty) |
+| `Mod+Return` | Terminal (Ghostty) |
 | `Mod+Space` | App launcher (Noctalia) |
 | `Ctrl+Space` | Speech-to-text toggle |
 | `Mod+Shift+/` | Show hotkey overlay |

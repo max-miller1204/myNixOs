@@ -9,6 +9,15 @@
         gh
         jq
         nixd
+        typescript-language-server
+        rust-analyzer
+        pyright
+        lua-language-server
+        vscode-langservers-extracted
+        clang-tools
+        haskell-language-server
+        sourcekit-lsp
+        marksman
         ripgrep
         tree
         just
@@ -19,6 +28,14 @@
         lazygit
         dust
         fastfetch
+        tree-sitter
+        imagemagick
+        trash-cli
+        ghostscript
+        sqlite
+        luarocks
+        lua5_1
+        python3
       ];
     };
 

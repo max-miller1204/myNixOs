@@ -35,7 +35,7 @@ layout {
 
 binds {
   // Terminal and launcher
-  Mod+Return { spawn "alacritty"; }
+  Mod+Return { spawn "ghostty"; }
   Mod+Space { spawn-sh "noctalia-shell ipc call launcher toggle"; }
 
   // Speech-to-text
