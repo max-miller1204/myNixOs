@@ -1,6 +1,6 @@
-{ self, inputs, ... }: {
+{ inputs, ... }: {
   den.aspects.catppuccin = {
-    nixos = { pkgs, lib, ... }: {
+    nixos = { ... }: {
       imports = [ inputs.catppuccin.nixosModules.catppuccin ];
 
       catppuccin = {
@@ -10,7 +10,7 @@
       };
     };
 
-    homeManager = { pkgs, lib, ... }: {
+    homeManager = { ... }: {
       imports = [ inputs.catppuccin.homeModules.catppuccin ];
 
       catppuccin = {

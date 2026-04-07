@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.aerospace = {
     hmDarwin = { ... }: {
       programs.aerospace = {

@@ -1,6 +1,6 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.greetd = {
-    nixos = { pkgs, ... }: {
+    nixos = { ... }: {
       programs.regreet = {
         enable = true;
         cageArgs = [ "-m" "last" ];

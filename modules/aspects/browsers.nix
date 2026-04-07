@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.browsers = {
     nixos = { ... }: {
       programs.firefox.enable = true;

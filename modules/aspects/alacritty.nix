@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.alacritty = {
     homeManager = { ... }: {
       programs.alacritty = {

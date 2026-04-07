@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.fingerprint = {
     nixos = { pkgs, ... }: {
       services.fprintd = {

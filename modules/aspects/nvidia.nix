@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.nvidia = {
     nixos = { ... }: {
       hardware.graphics.enable = true;

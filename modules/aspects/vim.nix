@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.vim = {
     homeManager = { pkgs, ... }: {
       programs.vim = {

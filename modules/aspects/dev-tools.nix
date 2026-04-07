@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.dev-tools = {
     homeManager = { pkgs, ... }: {
       home.packages = with pkgs; [

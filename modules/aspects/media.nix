@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.media = {
     hmLinux = { pkgs, ... }: {
       home.packages = with pkgs; [
