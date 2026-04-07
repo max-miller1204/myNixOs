@@ -17,6 +17,7 @@ input {
   keyboard {
     xkb {
       layout "us,ua"
+      options "caps:hyper"
     }
   }
 }

@@ -34,7 +34,7 @@
           output.paste_key = "ctrl+shift+v";
           hotkey = {
             enabled = true;
-            key = "F7";
+            key = "capslock";
             mode = "hold";
           };
         };
