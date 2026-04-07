@@ -7,6 +7,7 @@
         inputs.codex-cli-nix.overlays.default
         inputs.copilot-cli-nix.overlays.default
         inputs.opencode-nix.overlays.default
+        inputs.stt-nix.overlays.default
       ];
       environment.systemPackages = with pkgs; [
         claude-code

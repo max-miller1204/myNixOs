@@ -2,6 +2,12 @@
   den.aspects.nix-settings = {
     os = { ... }: {
       nix.settings.experimental-features = [ "nix-command" "flakes" ];
+      nix.settings.extra-substituters = [
+        "https://cache.garnix.io"
+      ];
+      nix.settings.extra-trusted-public-keys = [
+        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      ];
       nix.optimise.automatic = true;
       nixpkgs.config.allowUnfree = true;
       home-manager.useGlobalPkgs = true;

@@ -4,7 +4,6 @@
       programs.ghostty = {
         enable = true;
         settings = {
-          command = "fish";
           font-family = "JetBrainsMono Nerd Font";
           font-size = 13;
           background-opacity = 0.75;

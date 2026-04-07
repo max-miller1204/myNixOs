@@ -15,6 +15,7 @@
       den.aspects.catppuccin
       den.aspects.aerospace
       den.aspects.karabiner
+      den.aspects.stt-nix
       den.aspects.hmPlatforms
       den.provides.primary-user
       (den.provides.user-shell "fish")
