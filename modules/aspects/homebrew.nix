@@ -26,6 +26,7 @@
           "claude-code@latest"
           "codex"
           "font-jetbrains-mono-nerd-font"
+          "ghostty"
           "karabiner-elements"
           "macdown-3000"
           "neovide-app"

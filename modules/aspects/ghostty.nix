@@ -1,6 +1,6 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.ghostty = {
-    homeManager = { pkgs, ... }: {
+    homeManager = { ... }: {
       programs.ghostty = {
         enable = true;
         settings = {
@@ -15,6 +15,10 @@
           copy-on-select = "clipboard";
         };
       };
+    };
+
+    hmDarwin = { ... }: {
+      programs.ghostty.package = null;
     };
   };
 }

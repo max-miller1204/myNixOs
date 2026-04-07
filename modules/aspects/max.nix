@@ -16,6 +16,7 @@
       den.aspects.aerospace
       den.aspects.karabiner
       den.aspects.stt-nix
+      den.aspects.thunar
       den.aspects.hmPlatforms
       den.provides.primary-user
       (den.provides.user-shell "fish")
@@ -27,7 +28,7 @@
       xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
     };
 
-    homeManager = { config, pkgs, ... }: {
+    homeManager = { config, ... }: {
       imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
       sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";

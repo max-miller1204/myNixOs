@@ -145,7 +145,7 @@ Complete shortcut list across all layers: shell, tmux, git, and niri window mana
 |-----|--------|
 | `Mod+Return` | Terminal (Ghostty) |
 | `Mod+Space` | App launcher (Noctalia) |
-| `Ctrl+Space` | Speech-to-text toggle |
+| `Caps` | Speech-to-text toggle |
 | `Mod+Shift+/` | Show hotkey overlay |
 
 ### Window Focus (arrows or hjkl)

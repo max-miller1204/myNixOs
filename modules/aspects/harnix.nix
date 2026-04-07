@@ -15,7 +15,6 @@
           # "@mariozechner/pi-coding-agent"
           "oh-my-codex"
           "gsd-pi@latest"
-          "dmux"
         ];
 
         bunPackages = [

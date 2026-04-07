@@ -55,14 +55,24 @@
           gd = ''
             if gum confirm "Remove worktree and branch?"
               set -l cwd (pwd)
-              set -l wt (basename $cwd)
-              set -l root (string replace -r '--.*' "" $wt)
-              set -l branch (string replace -r '^[^-]*--' "" $wt)
-              if test "$root" != "$wt"
-                cd "../$root"
-                git worktree remove $cwd --force; or return 1
-                git branch -D $branch
+              set -l git_dir (git rev-parse --git-dir 2>/dev/null); or begin
+                echo "gd: not inside a git repository" >&2
+                return 1
               end
+              set -l common_dir (git rev-parse --git-common-dir 2>/dev/null); or return 1
+              set -l branch (git branch --show-current 2>/dev/null); or return 1
+              set -l resolved_git_dir (realpath $git_dir)
+              set -l resolved_common_dir (realpath $common_dir)
+              set -l repo_root (realpath "$common_dir/..")
+
+              if test "$resolved_git_dir" = "$resolved_common_dir"
+                echo "gd: current directory is the main worktree, refusing to remove it" >&2
+                return 1
+              end
+
+              cd $repo_root; or return 1
+              git worktree remove $cwd --force; or return 1
+              git branch -D $branch
             end
           '';
           tdl = ''

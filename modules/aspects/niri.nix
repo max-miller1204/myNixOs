@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ ... }: {
   den.aspects.niri = {
     nixos = { pkgs, ... }: {
       programs.niri.enable = true;
