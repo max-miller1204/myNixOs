@@ -1,4 +1,4 @@
-{ self, inputs, ... }: {
+{ inputs, ... }: {
   den.aspects.harnix = {
     homeManager = { ... }: {
       imports = [ inputs.harnix.homeManagerModules.default ];
@@ -18,7 +18,7 @@
         ];
 
         bunPackages = [
-          "oh-my-opencode-slim@latest --reset --no-tui --tmux=yes --skills=yes"
+          "oh-my-opencode-slim@latest"
           "ruflo@latest"
         ];
       };

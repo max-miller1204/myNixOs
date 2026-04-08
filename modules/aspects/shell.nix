@@ -5,6 +5,7 @@
         enable = true;
         interactiveShellInit = ''
           fish_add_path --prepend /opt/homebrew/bin
+          fish_add_path --prepend ~/.bun/bin
           if set -q NIX_LD_LIBRARY_PATH
             set -gx LD_LIBRARY_PATH $NIX_LD_LIBRARY_PATH
           end
