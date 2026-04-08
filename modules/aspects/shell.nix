@@ -4,7 +4,10 @@
       programs.fish = {
         enable = true;
         interactiveShellInit = ''
-          fish_add_path --prepend /opt/homebrew/bin
+          if test (uname) = Darwin
+            fish_add_path --prepend /opt/homebrew/bin
+            mise activate fish | source
+          end
           fish_add_path --prepend ~/.bun/bin
           if set -q NIX_LD_LIBRARY_PATH
             set -gx LD_LIBRARY_PATH $NIX_LD_LIBRARY_PATH
@@ -186,8 +189,12 @@
             end
           '';
           open = ''
-            xdg-open $argv >/dev/null 2>&1 &
-            disown
+            if test (uname) = Linux
+              xdg-open $argv >/dev/null 2>&1 &
+              disown
+            else
+              command open $argv
+            end
           '';
           fip = ''
             if test (count $argv) -lt 2
