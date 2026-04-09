@@ -34,8 +34,8 @@
     copilot-cli-nix.url = "github:max-miller1204/copilot-cli-nix";
     harnix.url = "github:max-miller1204/harnix";
     stt-nix.url = "github:max-miller1204/stt-nix";
-    noctalia-qs = {
-      url = "github:noctalia-dev/noctalia-qs";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

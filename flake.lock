@@ -451,9 +451,31 @@
         "type": "github"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "noctalia-qs": "noctalia-qs"
+      },
+      "locked": {
+        "lastModified": 1775689927,
+        "narHash": "sha256-UVL4JnAHXs90AiKfhjXBQ83KhiXHAyZ4TdaPkA/ts/g=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "rev": "0fcaa49875bf0c994bb5c604320454ef72e6ba8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "type": "github"
+      }
+    },
     "noctalia-qs": {
       "inputs": {
         "nixpkgs": [
+          "noctalia",
           "nixpkgs"
         ],
         "systems": "systems_5",
@@ -506,7 +528,7 @@
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "nixpkgs": "nixpkgs_5",
-        "noctalia-qs": "noctalia-qs",
+        "noctalia": "noctalia",
         "opencode-nix": "opencode-nix",
         "sops-nix": "sops-nix",
         "stt-nix": "stt-nix",
@@ -659,6 +681,7 @@
     "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
+          "noctalia",
           "noctalia-qs",
           "nixpkgs"
         ]
