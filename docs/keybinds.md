@@ -46,6 +46,8 @@ Complete shortcut list across all layers: shell, tmux, git, and niri window mana
 | `compress` | `compress mydir` | Create mydir.tar.gz |
 | `ga` | `ga feature-x` | Create git worktree `../repo--feature-x/`, cd into it |
 | `gd` | `gd` | Delete current worktree + branch (gum confirm) |
+
+> **Worktrees:** A worktree is a second checkout of the same repo — same Git database, separate directory, separate branch. A branch can only be checked out in one worktree at a time, so use `cd` to enter an existing worktree rather than `git switch`. Remove the worktree (`gd`) to free the branch for switching elsewhere.
 | `tdl` | `tdl claude` | Tmux dev layout: editor 70% + AI 30% + terminal 15% |
 | `tdl` | `tdl claude codex` | Dev layout with two AI panes (split vertically) |
 | `tdlm` | `tdlm claude` | Multi-project: one tdl window per subdirectory |

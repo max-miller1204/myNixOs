@@ -2,6 +2,7 @@
   den.aspects.utilities = {
     homeManager = { pkgs, ... }: {
       home.packages = with pkgs; [
+        btop
         nvd
         pfetch-rs
       ];

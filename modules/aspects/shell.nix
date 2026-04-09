@@ -154,6 +154,40 @@
             end
             tmux select-pane -t $panes[1]
           '';
+          gw = ''
+            set -l git_dir (git rev-parse --git-dir 2>/dev/null); or return 1
+            set -l common_dir (realpath (git rev-parse --git-common-dir 2>/dev/null)); or return 1
+            set -l resolved_git_dir (realpath $git_dir)
+
+            if test "$resolved_git_dir" = "$common_dir"
+              echo "gw: already in the main worktree" >&2
+              return 1
+            end
+
+            set -l source_abs (pwd -P)
+            set -l main_abs (realpath "$common_dir/..")
+
+            set -l has_tracked (git diff HEAD --name-only; git diff --cached --name-only)
+            set -l untracked (git ls-files --others --exclude-standard)
+
+            if test -z "$has_tracked" -a -z "$untracked"
+              echo "Nothing to apply."
+              return 0
+            end
+
+            if test -n "$has_tracked"
+              git diff HEAD | git -C $main_abs apply --index - 2>/dev/null
+              or git diff HEAD | git -C $main_abs apply --3way -
+            end
+
+            for f in $untracked
+              mkdir -p (dirname "$main_abs/$f")
+              cp "$source_abs/$f" "$main_abs/$f"
+            end
+
+            git -C $main_abs status --short
+            echo "Applied to $main_abs"
+          '';
           n = ''
             if test (count $argv) -eq 0
               command nvim .

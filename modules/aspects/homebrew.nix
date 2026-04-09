@@ -20,7 +20,7 @@
         ];
         casks = [
           "aerospace"
-          "antigravity"
+          "cursor"
           "balenaetcher"
           "claude"
           "claude-code@latest"
