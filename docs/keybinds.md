@@ -4,6 +4,21 @@ Complete shortcut list across all layers: shell, tmux, git, and niri window mana
 
 ---
 
+## Nix Utilities
+
+| Command | Usage | Description |
+|---------|-------|-------------|
+| `nsymlink` | `nsymlink <file>` | Toggle a nix-managed symlink to an editable copy. Run again to restore the original symlink. Saves backup as `.bak` |
+| `ngeneration` | `ngeneration [num]` | Show current NixOS generation, or switch to generation `num` (with fish tab completion) |
+| `niri-config` | `niri-config` | Pretty-print active niri config |
+| `ghostty-config` | `ghostty-config` | Pretty-print active ghostty config |
+| `noctalia-config` | `noctalia-config` | Pretty-print active noctalia settings |
+| `fish-config` | `fish-config` | Pretty-print active fish config |
+| `tmux-config` | `tmux-config` | Pretty-print active tmux config |
+| `starship-config` | `starship-config` | Pretty-print active starship config |
+
+---
+
 ## Shell Aliases
 
 | Alias | Command |
@@ -147,6 +162,8 @@ Complete shortcut list across all layers: shell, tmux, git, and niri window mana
 |-----|--------|
 | `Mod+Return` | Terminal (Ghostty) |
 | `Mod+Space` | App launcher (Noctalia) |
+| `Mod+Grave` | Toggle between last two windows |
+| `Mod+Tab` | Toggle between last two workspaces |
 | `Caps` | Speech-to-text toggle |
 | `Mod+Shift+/` | Show hotkey overlay |
 
@@ -194,7 +211,7 @@ Complete shortcut list across all layers: shell, tmux, git, and niri window mana
 
 | Key | Action |
 |-----|--------|
-| `Mod+1` - `Mod+9` | Focus workspace 1-9 |
+| `Mod+1` - `Mod+9` | Focus workspace 1-9 (press same key again to go back) |
 | `Mod+Ctrl+1` - `Mod+Ctrl+9` | Move column to workspace 1-9 |
 | `Mod+Page_Down/U` | Focus workspace down |
 | `Mod+Page_Up/I` | Focus workspace up |
