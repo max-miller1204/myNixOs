@@ -6,6 +6,7 @@
       den.aspects.niri
       den.aspects.flatpak
       den.aspects.noctalia
+      den.aspects.nix-utils
       den.aspects.greetd
       den.aspects.nvidia
       den.aspects.audio

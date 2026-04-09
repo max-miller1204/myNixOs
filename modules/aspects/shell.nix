@@ -1,8 +1,17 @@
 { self, inputs, ... }: {
   den.aspects.shell = {
-    homeManager = { ... }: {
+    homeManager = { pkgs, ... }:
+    let
+      fish-completion-sync = pkgs.fetchFromGitHub {
+        owner = "iynaix";
+        repo = "fish-completion-sync";
+        rev = "4f058ad2986727a5f510e757bc82cbbfca4596f0";
+        hash = "sha256-kHpdCQdYcpvi9EFM/uZXv93mZqlk1zCi2DRhWaDyK5g=";
+      };
+    in {
       programs.fish = {
         enable = true;
+        plugins = [ { name = "fish-completion-sync"; src = fish-completion-sync; } ];
         interactiveShellInit = ''
           if test (uname) = Darwin
             fish_add_path --prepend /opt/homebrew/bin
@@ -17,6 +26,9 @@
           set -gx BAT_THEME ansi
           set -gx EDITOR nvim
           set -gx VISUAL nvim
+
+          # Reload completions when $XDG_DATA_DIRS changes (e.g. nix shell)
+          source ${fish-completion-sync}/init.fish
         '';
         shellAliases = {
           ll = "ls -la";

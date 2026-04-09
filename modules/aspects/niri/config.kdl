@@ -34,10 +34,16 @@ layout {
   }
 }
 
+workspace-auto-back-and-forth
+
 binds {
   // Terminal and launcher
   Mod+Return { spawn "ghostty"; }
   Mod+Space { spawn-sh "noctalia-shell ipc call launcher toggle"; }
+
+  // Toggle between last two windows/workspaces
+  Mod+Grave { focus-window-previous; }
+  Mod+Tab { focus-workspace-previous; }
 
 
   // Hotkey overlay
