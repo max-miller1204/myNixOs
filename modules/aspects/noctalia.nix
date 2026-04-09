@@ -1,11 +1,11 @@
 { inputs, ... }: {
   den.aspects.noctalia = {
     nixos = { pkgs, ... }: {
-      imports = [ inputs.noctalia.nixosModules.default ];
       services.upower.enable = true;
       environment.sessionVariables.NOCTALIA_PAM_SERVICE = "swaylock";
-      environment.systemPackages = with pkgs; [
-        cava
+      environment.systemPackages = [
+        inputs.noctalia.packages.${pkgs.system}.default
+        pkgs.cava
       ];
     };
 

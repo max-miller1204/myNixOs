@@ -20,6 +20,7 @@ input {
       options "caps:hyper"
     }
   }
+  workspace-auto-back-and-forth
 }
 
 layout {
@@ -33,8 +34,6 @@ layout {
     inactive-color "#585b70"
   }
 }
-
-workspace-auto-back-and-forth
 
 binds {
   // Terminal and launcher
