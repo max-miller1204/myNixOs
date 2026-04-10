@@ -1,5 +1,10 @@
 {
-  "model": "opus",
+  "model": "opusplan",
+  "advisorModel": "opus",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
