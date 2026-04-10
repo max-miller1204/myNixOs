@@ -18,6 +18,12 @@
         haskell-language-server
         sourcekit-lsp
         marksman
+        (rWrapper.override {
+          packages = with rPackages; [
+            languageserver
+          ];
+        })
+        panache
         ripgrep
         tree
         just
@@ -42,6 +48,7 @@
     hmLinux = { pkgs, ... }: {
       home.packages = with pkgs; [
         vscode
+        rstudio
       ];
     };
   };

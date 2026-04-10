@@ -91,6 +91,23 @@
         ".swift": "swift"
       }
     },
+    "r": {
+      "command": "R",
+      "args": ["--vanilla", "--slave", "-e", "languageserver::run()"],
+      "extensionToLanguage": {
+        ".R": "r",
+        ".r": "r"
+      }
+    },
+    "rmarkdown": {
+      "command": "panache",
+      "args": ["lsp"],
+      "extensionToLanguage": {
+        ".Rmd": "markdown",
+        ".rmd": "markdown",
+        ".qmd": "markdown"
+      }
+    },
     "markdown": {
       "command": "marksman",
       "args": ["server"],

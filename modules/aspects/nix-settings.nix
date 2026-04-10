@@ -12,6 +12,7 @@
       ];
       nix.optimise.automatic = true;
       nixpkgs.config.allowUnfree = true;
+      nixpkgs.config.permittedInsecurePackages = [ "electron-38.8.4" ];
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.backupFileExtension = "hm-backup";

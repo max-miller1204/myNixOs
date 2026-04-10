@@ -4,7 +4,7 @@
       services.upower.enable = true;
       environment.sessionVariables.NOCTALIA_PAM_SERVICE = "swaylock";
       environment.systemPackages = [
-        inputs.noctalia.packages.${pkgs.system}.default
+        inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
         pkgs.cava
       ];
     };
