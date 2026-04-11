@@ -18,9 +18,14 @@
         path = "${config.home.homeDirectory}/.config/stt-nix/groq-api-key";
       };
 
-      # Give the tray host (StatusNotifierWatcher) time to appear
-      systemd.user.services.stt-nix.Service.ExecStartPre =
-        "${pkgs.coreutils}/bin/sleep 3";
+      # noctalia-shell hosts the StatusNotifierWatcher; bounce with it, then sleep for DBus registration
+      systemd.user.services.stt-nix = {
+        Unit = {
+          After = [ "noctalia-shell.service" ];
+          PartOf = [ "noctalia-shell.service" ];
+        };
+        Service.ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
+      };
 
       services.stt-nix = {
         enable = true;

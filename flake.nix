@@ -26,12 +26,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    code-cursor-nix.url = "github:max-miller1204/code-cursor-nix/fix/update-x86_64-linux-hash";
     claude-code.url = "github:sadjow/claude-code-nix";
     youtube-mcp-server.url = "github:max-miller1204/youtube-mcp-server-nix";
-    opencode-nix.url = "github:max-miller1204/opencode-nix";
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
-    copilot-cli-nix.url = "github:max-miller1204/copilot-cli-nix";
     harnix.url = "github:max-miller1204/harnix";
     stt-nix.url = "github:max-miller1204/stt-nix";
     noctalia = {

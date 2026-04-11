@@ -11,16 +11,10 @@
         #   "pkg@1.2.3"   → pins to exact version
         #   "@scope/pkg"  → scoped package
         npmPackages = [
-          # "@anthropic-ai/claude-code"
-          # "@mariozechner/pi-coding-agent"
           "oh-my-codex"
-          "gsd-pi@latest"
         ];
 
-        bunPackages = [
-          "oh-my-opencode-slim@latest"
-          "ruflo@latest"
-        ];
+        bunPackages = [ ];
       };
     };
   };

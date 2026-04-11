@@ -3,8 +3,6 @@ window-rule {
   draw-border-with-background false
 }
 
-spawn-at-startup "noctalia-shell"
-
 output "DP-3" {
   position x=1755 y=0
 }

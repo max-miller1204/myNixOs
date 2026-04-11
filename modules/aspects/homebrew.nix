@@ -20,7 +20,6 @@
         ];
         casks = [
           "aerospace"
-          "cursor"
           "balenaetcher"
           "claude"
           "claude-code@latest"
@@ -36,7 +35,6 @@
           "utm"
           "visual-studio-code"
           "zed"
-          "copilot-cli"
         ];
       };
     };
