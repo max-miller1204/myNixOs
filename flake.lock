@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775213373,
-        "narHash": "sha256-wJHsijC2l/E+ovmlpPGha8pXA6RHSwHWmBV97gvkmyI=",
+        "lastModified": 1775938181,
+        "narHash": "sha256-3VRl7wTV2guWBI1kYT2OZEAMYU5nUZMo6um9UH+HYHE=",
         "owner": "catppuccin",
         "repo": "nix",
-        "rev": "ba73719e673e7c2d89ac2f8df0bc0d48983e4907",
+        "rev": "8d8b4fd30aecbf30eef6b1d1977670a597d29494",
         "type": "github"
       },
       "original": {
@@ -26,11 +26,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1775848625,
-        "narHash": "sha256-y2/PYZu+yAeG+ueAuhjeeAWHOSvZMJfPiNs7pQJ/Wbc=",
+        "lastModified": 1775940134,
+        "narHash": "sha256-wTrRgKs2E2m74FUJJByrIKfXviT0/fBDxeVxu8vrxlc=",
         "owner": "sadjow",
         "repo": "claude-code-nix",
-        "rev": "2a665ed3a46cb363630df50150ecf47f45a1d893",
+        "rev": "ed84280f19998269f3b7caeb83f3c78c2204b60a",
         "type": "github"
       },
       "original": {
@@ -45,11 +45,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1775862970,
-        "narHash": "sha256-8UWmxoqFVPyDTQcEJ/91nf7tRJP6AA8MtNXBJ/yldkM=",
+        "lastModified": 1775882637,
+        "narHash": "sha256-e2jaiMpQr2N/AxhRqt1NA0DU7jC9Sv0pvNnpCuyXxuw=",
         "owner": "sadjow",
         "repo": "codex-cli-nix",
-        "rev": "cde2a15810c12855c5d96a8b49c1ff51036b8053",
+        "rev": "d4223ed9ee52efe572c1612579c3c6a80bc4d8db",
         "type": "github"
       },
       "original": {
@@ -80,11 +80,11 @@
     },
     "den": {
       "locked": {
-        "lastModified": 1775858284,
-        "narHash": "sha256-bKFPV3eT17EqT/O05tUvL+BcRuPz0pknyriQodJFPa0=",
+        "lastModified": 1775914621,
+        "narHash": "sha256-GS7zc/lBFdwR27OYhcthw/0zVpQXqQ4gqN3mcFDDMpc=",
         "owner": "vic",
         "repo": "den",
-        "rev": "57f46a21ebf668ffe5e53877f89ce20a0e90d1a5",
+        "rev": "612ce7048dc408a289712dc3eeb69bffbecebeda",
         "type": "github"
       },
       "original": {
@@ -187,11 +187,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775781825,
-        "narHash": "sha256-L5yKTpR+alrZU2XYYvIxCeCP4LBHU5jhwSj7H1VAavg=",
+        "lastModified": 1775900011,
+        "narHash": "sha256-QUGu6CJYFQ5AWVV0n3/FsJyV+1/gj7HSDx68/SX9pwM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "e35c39fca04fee829cecdf839a50eb9b54d8a701",
+        "rev": "b0569dc6ec1e6e7fefd8f6897184e4c191cd768e",
         "type": "github"
       },
       "original": {

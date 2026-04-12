@@ -22,10 +22,25 @@
       (den.provides.user-shell "fish")
     ];
 
-    hmLinux = { ... }: {
+    hmLinux = { pkgs, ... }: {
       xdg.mimeApps.enable = true;
       xdg.configFile."noctalia/settings.json".source = ./noctalia/settings.json;
       xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
+
+      systemd.user.services.noctalia-shell = {
+        Unit = {
+          Description = "Noctalia shell (quickshell)";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+        };
+        Service = {
+          ExecStart = "${inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/noctalia-shell";
+          Restart = "on-failure";
+          RestartSec = 3;
+          Slice = "app.slice";
+        };
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
     };
 
     homeManager = { config, ... }: {
