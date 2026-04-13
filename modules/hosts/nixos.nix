@@ -34,6 +34,16 @@
         enable = true;
         libraries = with pkgs; [
           zlib
+          # X11 / GUI libs (e.g. opencv-python full build, matplotlib Qt backend)
+          xorg.libxcb
+          xorg.libX11
+          xorg.libXext
+          xorg.libSM
+          xorg.libICE
+          libGL
+          glib
+          # libstdc++.so.6 — needed by lots of ML/CV pip wheels
+          stdenv.cc.cc.lib
         ];
       };
 

@@ -91,6 +91,68 @@
               git branch -D $branch
             end
           '';
+          gdw = ''
+            set -l common_dir (git rev-parse --git-common-dir 2>/dev/null); or begin
+              echo "gdw: not inside a git repository" >&2
+              return 1
+            end
+            set -l main_abs (realpath "$common_dir/..")
+            set -l base (basename $main_abs)
+            set -l parent (dirname $main_abs)
+            set -l prefix "$parent/$base--"
+
+            set -l targets
+            set -l target_branches
+            set -l current_path ""
+            set -l current_branch ""
+            for line in (git -C $main_abs worktree list --porcelain)
+              if string match -q "worktree *" -- $line
+                set current_path (string replace "worktree " "" -- $line)
+              else if string match -q "branch refs/heads/*" -- $line
+                set current_branch (string replace "branch refs/heads/" "" -- $line)
+                if string match -q "$prefix*" -- $current_path
+                  set -a targets $current_path
+                  set -a target_branches $current_branch
+                end
+                set current_path ""
+                set current_branch ""
+              end
+            end
+
+            if test (count $targets) -eq 0
+              echo "gdw: no swarm worktrees to remove"
+              return 0
+            end
+
+            echo "Will remove:"
+            for i in (seq (count $targets))
+              echo "  $targets[$i]  ($target_branches[$i])"
+            end
+            if not gum confirm "Remove all listed worktrees and branches?"
+              return 1
+            end
+
+            cd $main_abs; or return 1
+
+            if test -n "$TMUX"
+              for line in (tmux list-panes -a -F "#{pane_id} #{pane_current_path}")
+                set -l parts (string split -m 1 " " -- $line)
+                set -l pid $parts[1]
+                set -l ppath $parts[2]
+                for t in $targets
+                  if test "$ppath" = "$t"; or string match -q "$t/*" -- $ppath
+                    tmux kill-pane -t $pid 2>/dev/null
+                    break
+                  end
+                end
+              end
+            end
+
+            for i in (seq (count $targets))
+              git worktree remove --force $targets[$i]
+              git branch -D $target_branches[$i]
+            end
+          '';
           tdl = ''
             if test -z "$argv[1]"
               echo "Usage: tdl <c|cx|codex|other_ai> [<second_ai>]"
@@ -165,6 +227,92 @@
               tmux send-keys -t $pane $cmd C-m
             end
             tmux select-pane -t $panes[1]
+          '';
+          tslw = ''
+            if test (count $argv) -lt 2
+              echo "Usage: tslw <cmd> <branch1> [branch2 ...]"
+              echo "  Pass \"\" as cmd to skip auto-running anything."
+              return 1
+            end
+            if test -z "$TMUX"
+              echo "You must start tmux to use tslw."
+              return 1
+            end
+            set -l cmd $argv[1]
+            set -l branches $argv[2..-1]
+
+            set -l common_dir (git rev-parse --git-common-dir 2>/dev/null); or begin
+              echo "tslw: not inside a git repository" >&2
+              return 1
+            end
+            set -l main_abs (realpath "$common_dir/..")
+            set -l base (basename $main_abs)
+            set -l parent (dirname $main_abs)
+
+            set -l wt_paths
+            for branch in $branches
+              set -l wt_path "$parent/$base--$branch"
+              if not test -d $wt_path
+                git -C $main_abs worktree add -b $branch $wt_path 2>/dev/null
+                or git -C $main_abs worktree add $wt_path $branch
+                or begin
+                  echo "tslw: failed to create worktree for $branch" >&2
+                  return 1
+                end
+              end
+              set -a wt_paths $wt_path
+            end
+
+            set -l new_panes
+            set -l split_target $TMUX_PANE
+            for wt in $wt_paths
+              set -l new_pane (tmux split-window -h -t $split_target -c $wt -P -F "#{pane_id}")
+              set -a new_panes $new_pane
+              set split_target $new_pane
+              tmux select-layout -t $TMUX_PANE tiled
+            end
+            if test -n "$cmd"
+              for pane in $new_panes
+                tmux send-keys -t $pane $cmd C-m
+              end
+            end
+            tmux select-pane -t $new_panes[1]
+          '';
+          tslwm = ''
+            if test (count $argv) -lt 2
+              echo "Usage: tslwm <cmd> <branch1> [branch2 ...]"
+              return 1
+            end
+            if test -z "$TMUX"
+              echo "You must start tmux to use tslwm."
+              return 1
+            end
+            set -l cmd $argv[1]
+            set -l branches $argv[2..-1]
+
+            set -l common_dir (git rev-parse --git-common-dir 2>/dev/null); or begin
+              echo "tslwm: not inside a git repository" >&2
+              return 1
+            end
+            set -l main_abs (realpath "$common_dir/..")
+            set -l base (basename $main_abs)
+            set -l parent (dirname $main_abs)
+
+            for branch in $branches
+              set -l wt_path "$parent/$base--$branch"
+              if not test -d $wt_path
+                git -C $main_abs worktree add -b $branch $wt_path 2>/dev/null
+                or git -C $main_abs worktree add $wt_path $branch
+                or begin
+                  echo "tslwm: failed to create worktree for $branch" >&2
+                  continue
+                end
+              end
+              set -l new_win (tmux new-window -c $wt_path -n $branch -P -F "#{pane_id}")
+              if test -n "$cmd"
+                tmux send-keys -t $new_win $cmd C-m
+              end
+            end
           '';
           gw = ''
             set -l git_dir (git rev-parse --git-dir 2>/dev/null); or return 1
