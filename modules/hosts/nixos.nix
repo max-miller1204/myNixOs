@@ -35,11 +35,11 @@
         libraries = with pkgs; [
           zlib
           # X11 / GUI libs (e.g. opencv-python full build, matplotlib Qt backend)
-          xorg.libxcb
-          xorg.libX11
-          xorg.libXext
-          xorg.libSM
-          xorg.libICE
+          libxcb
+          libx11
+          libxext
+          libsm
+          libice
           libGL
           glib
           # libstdc++.so.6 — needed by lots of ML/CV pip wheels

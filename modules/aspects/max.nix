@@ -56,7 +56,6 @@
         executable = true;
       };
       home.file.".claude/skills/spec".source = ./claude/skills/spec;
-      home.file.".claude/skills/nix/SKILL.md".source = ./claude/skills/nix/SKILL.md;
       home.file.".claude/plugins/lsp-servers/.claude-plugin/plugin.json".source = ./claude/lsp-servers/.claude-plugin/plugin.json;
     };
   };

@@ -28,10 +28,12 @@
         tree
         just
         neovim
+        zettlr
         gum
         eza
         fd
         lazygit
+        viu
         dust
         fastfetch
         tree-sitter

@@ -314,6 +314,57 @@
               end
             end
           '';
+          gwd = ''
+            set -l git_dir (git rev-parse --git-dir 2>/dev/null); or begin
+              echo "gwd: not inside a git repository" >&2
+              return 1
+            end
+            set -l common_dir (realpath (git rev-parse --git-common-dir 2>/dev/null)); or return 1
+            set -l resolved_git_dir (realpath $git_dir)
+
+            if test "$resolved_git_dir" = "$common_dir"
+              echo "gwd: already in the main worktree" >&2
+              return 1
+            end
+
+            set -l branch (git branch --show-current 2>/dev/null); or return 1
+            set -l source_abs (pwd -P)
+            set -l main_abs (realpath "$common_dir/..")
+
+            if not gum confirm "Apply '$branch' to main, stage, remove worktree, and close pane?"
+              return 1
+            end
+
+            set -l has_tracked (git diff HEAD --name-only; git diff --cached --name-only)
+            set -l untracked (git ls-files --others --exclude-standard)
+
+            if test -n "$has_tracked"
+              git diff HEAD | git -C $main_abs apply --index - 2>/dev/null
+              or git diff HEAD | git -C $main_abs apply --3way -
+            end
+
+            for f in $untracked
+              mkdir -p (dirname "$main_abs/$f")
+              cp "$source_abs/$f" "$main_abs/$f"
+            end
+
+            git -C $main_abs add .
+            git -C $main_abs status --short
+            echo "Applied and staged in $main_abs"
+
+            set -l pane_id ""
+            if test -n "$TMUX"
+              set pane_id $TMUX_PANE
+            end
+
+            cd $main_abs; or return 1
+            git worktree remove $source_abs --force; or return 1
+            git branch -D $branch
+
+            if test -n "$pane_id"
+              tmux kill-pane -t $pane_id 2>/dev/null
+            end
+          '';
           gw = ''
             set -l git_dir (git rev-parse --git-dir 2>/dev/null); or return 1
             set -l common_dir (realpath (git rev-parse --git-common-dir 2>/dev/null)); or return 1
