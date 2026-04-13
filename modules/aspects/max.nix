@@ -16,6 +16,7 @@
       den.aspects.aerospace
       den.aspects.karabiner
       den.aspects.stt-nix
+      den.aspects.obsidian
       den.aspects.thunar
       den.aspects.hmPlatforms
       den.provides.primary-user
