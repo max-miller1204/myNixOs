@@ -68,11 +68,11 @@
             git worktree add -b $branch $wt_path
             cd $wt_path
           '';
-          gd = ''
+          gwr = ''
             if gum confirm "Remove worktree and branch?"
               set -l cwd (pwd)
               set -l git_dir (git rev-parse --git-dir 2>/dev/null); or begin
-                echo "gd: not inside a git repository" >&2
+                echo "gwr: not inside a git repository" >&2
                 return 1
               end
               set -l common_dir (git rev-parse --git-common-dir 2>/dev/null); or return 1
@@ -82,7 +82,7 @@
               set -l repo_root (realpath "$common_dir/..")
 
               if test "$resolved_git_dir" = "$resolved_common_dir"
-                echo "gd: current directory is the main worktree, refusing to remove it" >&2
+                echo "gwr: current directory is the main worktree, refusing to remove it" >&2
                 return 1
               end
 
@@ -91,9 +91,9 @@
               git branch -D $branch
             end
           '';
-          gdw = ''
+          gwra = ''
             set -l common_dir (git rev-parse --git-common-dir 2>/dev/null); or begin
-              echo "gdw: not inside a git repository" >&2
+              echo "gwra: not inside a git repository" >&2
               return 1
             end
             set -l main_abs (realpath "$common_dir/..")
@@ -120,7 +120,7 @@
             end
 
             if test (count $targets) -eq 0
-              echo "gdw: no swarm worktrees to remove"
+              echo "gwra: no swarm worktrees to remove"
               return 0
             end
 
@@ -314,16 +314,16 @@
               end
             end
           '';
-          gwd = ''
+          gwf = ''
             set -l git_dir (git rev-parse --git-dir 2>/dev/null); or begin
-              echo "gwd: not inside a git repository" >&2
+              echo "gwf: not inside a git repository" >&2
               return 1
             end
             set -l common_dir (realpath (git rev-parse --git-common-dir 2>/dev/null)); or return 1
             set -l resolved_git_dir (realpath $git_dir)
 
             if test "$resolved_git_dir" = "$common_dir"
-              echo "gwd: already in the main worktree" >&2
+              echo "gwf: already in the main worktree" >&2
               return 1
             end
 
@@ -365,13 +365,13 @@
               tmux kill-pane -t $pane_id 2>/dev/null
             end
           '';
-          gw = ''
+          gwa = ''
             set -l git_dir (git rev-parse --git-dir 2>/dev/null); or return 1
             set -l common_dir (realpath (git rev-parse --git-common-dir 2>/dev/null)); or return 1
             set -l resolved_git_dir (realpath $git_dir)
 
             if test "$resolved_git_dir" = "$common_dir"
-              echo "gw: already in the main worktree" >&2
+              echo "gwa: already in the main worktree" >&2
               return 1
             end
 

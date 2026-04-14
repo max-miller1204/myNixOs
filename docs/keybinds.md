@@ -51,6 +51,10 @@ Complete shortcut list across all layers: shell, tmux, git, and niri window mana
 
 ## Shell Functions
 
+Grouped by workflow rather than alphabetically — each section lists commands in the order you'd typically call them.
+
+### Files & editing
+
 | Function | Usage | Description |
 |----------|-------|-------------|
 | `n` | `n [files]` | Open nvim (`.` if no args) |
@@ -58,23 +62,47 @@ Complete shortcut list across all layers: shell, tmux, git, and niri window mana
 | `eff` | `eff` | Open fzf-selected file in $EDITOR |
 | `sff` | `sff host:/tmp/` | Find recent file via fzf, scp to destination |
 | `open` | `open file.pdf` | xdg-open (backgrounded, silenced) |
-| `compress` | `compress mydir` | Create mydir.tar.gz |
-| `ga` | `ga feature-x` | Create git worktree `../repo--feature-x/`, cd into it |
-| `gd` | `gd` | Delete current worktree + branch (gum confirm) |
-| `gdw` | `gdw` | Remove all swarm worktrees for current repo (paths matching `<repo>--*`) plus their branches; single `gum confirm` prompt |
-| `gw` | `gw` | Sync current worktree's changes back to the main checkout: applies `git diff HEAD` as a patch and copies untracked files. Requires at least one commit in the worktree (needs a valid `HEAD`). |
-| `gwd` | `gwd` | `gw` + `gd` combined: apply changes to main, run `git add .` there, remove the worktree and branch, and kill the current tmux pane (gum confirm) |
+| `compress` | `compress mydir` | Create `mydir.tar.gz` |
 
-> **Worktrees:** A worktree is a second checkout of the same repo — same Git database, separate directory, separate branch. A branch can only be checked out in one worktree at a time, so use `cd` to enter an existing worktree rather than `git switch`. Remove the worktree (`gd`) to free the branch for switching elsewhere.
-| `tdl` | `tdl claude` | Tmux dev layout: editor 70% + AI 30% + terminal 15% |
+### Git worktree lifecycle
+
+All worktree commands start with `gw` (git worktree); the trailing letter is the verb. Typical flow: `ga` to spawn → work in it → `gwa` to sync back (keep the worktree) **or** `gwf` to sync + destroy. Use `gwr` to drop a single worktree, `gwra` to nuke an entire swarm.
+
+| Function | Usage | Description |
+|----------|-------|-------------|
+| `ga` | `ga feature-x` | **A**dd: create git worktree `../repo--feature-x/`, cd into it |
+| `gwa` | `gwa` | worktree **a**pply: apply this worktree's `git diff HEAD` + untracked files to the main checkout. Worktree stays. Requires a valid `HEAD`. |
+| `gwf` | `gwf` | worktree **f**inish: `gwa` + `git add .` in main + remove this worktree and branch + kill current tmux pane (gum confirm) |
+| `gwr` | `gwr` | worktree **r**emove: delete current worktree + branch (gum confirm) |
+| `gwra` | `gwra` | worktree **r**emove **a**ll: every `<repo>--*` swarm path plus its branch, single gum confirm |
+
+> **Worktrees:** A worktree is a second checkout of the same repo — same Git database, separate directory, separate branch. A branch can only be checked out in one worktree at a time, so `cd` into an existing worktree rather than `git switch`. Remove the worktree (`gwr`) to free the branch for switching elsewhere.
+
+### Tmux dev layouts
+
+| Function | Usage | Description |
+|----------|-------|-------------|
+| `tdl` | `tdl claude` | **D**ev **l**ayout: editor 70% + AI 30% + terminal 15% |
 | `tdl` | `tdl claude codex` | Dev layout with two AI panes (split vertically) |
-| `tdlm` | `tdlm claude` | Multi-project: one tdl window per subdirectory |
-| `tsl` | `tsl 3 claude` | Swarm: 3 tiled panes each running claude |
-| `tslw` | `tslw cx feat-a feat-b feat-c` | Swarm across worktrees: one tiled pane per branch, each inside its own worktree, each running the given command (pass `""` as cmd to skip auto-run) |
-| `tslwm` | `tslwm cx feat-a feat-b feat-c` | Swarm across worktrees by window: one tmux window per branch, each inside its own worktree, each running the given command |
-| `fip` | `fip server 8080 3000` | SSH forward ports to remote host |
-| `dip` | `dip 8080 3000` | Disconnect SSH port forwards |
-| `lip` | `lip` | List active SSH port forwards |
+| `tdlm` | `tdlm claude` | **M**ulti-project: one `tdl` window per subdirectory |
+
+### Tmux swarms
+
+Run the same command across N panes/windows. `tsl` is directory-only; `tslw`/`tslwm` spin up a worktree per branch first.
+
+| Function | Usage | Description |
+|----------|-------|-------------|
+| `tsl` | `tsl 3 claude` | **S**warm **l**ayout: 3 tiled panes each running claude |
+| `tslw` | `tslw cx feat-a feat-b feat-c` | Swarm across **w**orktrees by pane: one tiled pane per branch, each inside its own worktree, running the given command (pass `""` as cmd to skip auto-run) |
+| `tslwm` | `tslwm cx feat-a feat-b feat-c` | Swarm across worktrees by window (**m**ultiwindow): one tmux window per branch |
+
+### SSH port forwarding
+
+| Function | Usage | Description |
+|----------|-------|-------------|
+| `fip` | `fip server 8080 3000` | **F**orward **IP**orts to remote host |
+| `lip` | `lip` | **L**ist active SSH port forwards |
+| `dip` | `dip 8080 3000` | **D**isconnect SSH port forwards |
 
 ---
 

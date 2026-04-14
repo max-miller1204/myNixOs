@@ -273,7 +273,7 @@ den.aspects.nix-settings = {
 |-------------|-------|---------|
 | User CLI tools | `homeManager.home.packages` in user aspect | dev-tools.nix |
 | User dotfiles | `homeManager.programs.*` in user aspect | git.nix, vim.nix, tmux.nix |
-| Shell functions | `homeManager.programs.fish.functions` | shell.nix (ga, gd, tdl, tsl, etc.) |
+| Shell functions | `homeManager.programs.fish.functions` | shell.nix (ga, gwr, tdl, tsl, etc.) |
 | Shell aliases | `homeManager.programs.fish.shellAliases` | shell.nix |
 | Linux-only user tools | `hmLinux.home.packages` in user aspect | loupe, zathura, vscode |
 | Linux-only user config | `hmLinux` in user aspect | xdg.mimeApps, GTK/Qt theming |

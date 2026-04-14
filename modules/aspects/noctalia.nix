@@ -6,6 +6,8 @@
       environment.systemPackages = [
         inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
         pkgs.cava
+        pkgs.wl-clipboard
+        pkgs.cliphist
       ];
     };
 
