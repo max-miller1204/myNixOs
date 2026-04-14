@@ -27,8 +27,7 @@
         ripgrep
         tree
         just
-        neovim
-        zettlr
+        neovim 
         gum
         eza
         fd
@@ -51,6 +50,7 @@
       home.packages = with pkgs; [
         vscode
         rstudio
+        zettlr
       ];
     };
   };
