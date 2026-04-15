@@ -15,6 +15,7 @@
         bubblewrap
         unzip
         discord
+        obsidian
       ];
     };
   };
