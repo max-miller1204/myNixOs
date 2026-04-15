@@ -66,15 +66,15 @@ Grouped by workflow rather than alphabetically — each section lists commands i
 
 ### Git worktree lifecycle
 
-All worktree commands start with `gw` (git worktree); the trailing letter is the verb. Typical flow: `ga` to spawn → work in it → `gwa` to sync back (keep the worktree) **or** `gwf` to sync + destroy. Use `gwr` to drop a single worktree, `gwra` to nuke an entire swarm.
+All worktree commands start with `gw` (git worktree); the trailing letter is the verb. Typical flow: `ga` to spawn → work in it → `gwa` to sync back (keep the worktree) **or** `gwf` to sync + destroy. Use `gwr` to drop a single worktree, `gwra` to nuke an entire swarm. `gwa`, `gwf`, and `gwr` each accept an optional branch name so you can target another worktree from the main checkout.
 
 | Function | Usage | Description |
 |----------|-------|-------------|
 | `ga` | `ga feature-x` | **A**dd: create git worktree `../repo--feature-x/`, cd into it |
-| `gwa` | `gwa` | worktree **a**pply: apply this worktree's `git diff HEAD` + untracked files to the main checkout. Worktree stays. Requires a valid `HEAD`. |
-| `gwf` | `gwf` | worktree **f**inish: `gwa` + `git add .` in main + remove this worktree and branch + kill current tmux pane (gum confirm) |
-| `gwr` | `gwr` | worktree **r**emove: delete current worktree + branch (gum confirm) |
-| `gwra` | `gwra` | worktree **r**emove **a**ll: every `<repo>--*` swarm path plus its branch, single gum confirm |
+| `gwa` | `gwa [branch]` | worktree **a**pply: apply the worktree's `git diff HEAD` + untracked files to the main checkout. Worktree stays. With no arg, operates on the current worktree; with a branch arg, targets `../repo--<branch>/` from main. Requires a valid `HEAD`. |
+| `gwf` | `gwf [branch]` | worktree **f**inish: `gwa` + `git add .` in main + remove the worktree and branch + kill its tmux pane(s) (gum confirm). With no arg, folds the current worktree; with a branch arg, folds `../repo--<branch>/` from main. |
+| `gwr` | `gwr [branch]` | worktree **r**emove: delete the worktree + branch and kill its tmux pane(s) (gum confirm). With no arg, removes the current worktree; with a branch arg, removes `../repo--<branch>/` from main. |
+| `gwra` | `gwra` | worktree **r**emove **a**ll: every `<repo>--*` swarm path plus its branch, single gum confirm. Kills all matching tmux panes, including the current one once cleanup finishes. |
 
 > **Worktrees:** A worktree is a second checkout of the same repo — same Git database, separate directory, separate branch. A branch can only be checked out in one worktree at a time, so `cd` into an existing worktree rather than `git switch`. Remove the worktree (`gwr`) to free the branch for switching elsewhere.
 

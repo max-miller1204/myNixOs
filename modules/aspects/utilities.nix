@@ -5,6 +5,7 @@
         btop
         nvd
         pfetch-rs
+        poppler-utils
       ];
     };
 
