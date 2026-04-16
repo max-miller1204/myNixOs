@@ -176,14 +176,12 @@
 
             cd $main_abs; or return 1
 
-            set -l self_pane ""
             if test -n "$TMUX"
-              set self_pane $TMUX_PANE
               for line in (tmux list-panes -a -F "#{pane_id} #{pane_current_path}")
                 set -l parts (string split -m 1 " " -- $line)
                 set -l pid $parts[1]
                 set -l ppath $parts[2]
-                if test "$pid" = "$self_pane"
+                if test "$pid" = "$TMUX_PANE"
                   continue
                 end
                 for t in $targets
@@ -198,10 +196,6 @@
             for i in (seq (count $targets))
               git worktree remove --force $targets[$i]
               git branch -D $target_branches[$i]
-            end
-
-            if test -n "$self_pane"
-              tmux kill-pane -t $self_pane 2>/dev/null
             end
           '';
           tdl = ''
