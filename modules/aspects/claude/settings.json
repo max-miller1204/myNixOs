@@ -1,10 +1,15 @@
 {
-  "model": "opus[1m]",
-  "advisorModel": "opus",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
   },
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
@@ -20,13 +25,9 @@
       }
     }
   },
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
-  "permissions": {
-    "skipDangerousModePermissionPrompt": true
-  },
-  "voiceEnabled": false,
+  "advisorModel": "opus",
   "autoMemoryEnabled": true,
-  "autoDreamEnabled": true
+  "autoDreamEnabled": true,
+  "voiceEnabled": false,
+  "skipAutoPermissionPrompt": true
 }
