@@ -13,6 +13,9 @@
       nix.optimise.automatic = true;
       nixpkgs.config.allowUnfree = true;
       nixpkgs.config.permittedInsecurePackages = [ "electron-38.8.4" ];
+      # useGlobalPkgs / useUserPackages only apply when home-manager is integrated
+      # into a NixOS/Darwin host. Standalone homes (e.g. max@ubuntu) receive a
+      # pre-built pkgs and ignore these settings.
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.backupFileExtension = "hm-backup";

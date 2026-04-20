@@ -23,31 +23,29 @@
       (den.provides.user-shell "fish")
     ];
 
-    hmLinux = { pkgs, ... }: {
+    hmLinux = { ... }: {
       xdg.mimeApps.enable = true;
-      xdg.configFile."noctalia/settings.json".source = ./noctalia/settings.json;
-      xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
-
-      systemd.user.services.noctalia-shell = {
-        Unit = {
-          Description = "Noctalia shell (quickshell)";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-        };
-        Service = {
-          ExecStart = "${inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/noctalia-shell";
-          Restart = "on-failure";
-          RestartSec = 3;
-          Slice = "app.slice";
-        };
-        Install.WantedBy = [ "graphical-session.target" ];
-      };
     };
 
     homeManager = { config, ... }: {
       imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
       sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+
+      # Surface a clear error when activating a fresh standalone home (e.g. on
+      # Ubuntu) before the age key has been copied over, instead of failing
+      # mid-activation with a cryptic decryption error.
+      home.activation.checkSopsKey = config.lib.dag.entryBefore [ "writeBoundary" ] ''
+        if [ ! -f "${config.sops.age.keyFile}" ]; then
+          echo "" >&2
+          echo "ERROR: sops age key not found at ${config.sops.age.keyFile}" >&2
+          echo "Copy it from your NixOS host before running home-manager switch:" >&2
+          echo "  mkdir -p ~/.config/sops/age" >&2
+          echo "  scp <nixos-host>:~/.config/sops/age/keys.txt ~/.config/sops/age/" >&2
+          echo "" >&2
+          exit 1
+        fi
+      '';
 
       # Claude Code dotfiles
       home.file.".claude/settings.json".source = ./claude/settings.json;

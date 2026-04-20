@@ -1,5 +1,8 @@
 { lib, den, ... }: {
-  den.schema.user.classes = lib.mkDefault [ "homeManager" ];
+  # Enable the `user` class alongside home-manager so aspects can forward
+  # OS-level user config (e.g. extraGroups) via `provides.to-users.user.*`
+  # instead of hardcoding `users.users.<name>.*` in host aspects.
+  den.schema.user.classes = lib.mkDefault [ "homeManager" "user" ];
 
   # Class forwarding: hmLinux/hmDarwin → homeManager with platform guards
   # Enables aspects to have platform-specific HM config:

@@ -4,7 +4,10 @@
       programs.niri.enable = true;
       programs.niri.useNautilus = false;
 
-      # Needed for stt-nix hold-to-talk (evdev)
+      # Needed for stt-nix hold-to-talk (evdev).
+      # Hardcoded because den's `os-user` forwarder drops `user.X` arriving
+      # via `provides.to-users` — see https://github.com/vic/den/issues/473.
+      # Switch to `provides.to-users.user.extraGroups = [ "input" ]` once fixed.
       users.users.max.extraGroups = [ "input" ];
 
       xdg.portal = {
@@ -34,6 +37,8 @@
       ];
     };
 
-    # config.kdl deployed via max.nix hmLinux (provides.to-users wasn't deploying)
+    hmLinux = { ... }: {
+      xdg.configFile."niri/config.kdl".source = ./niri/config.kdl;
+    };
   };
 }

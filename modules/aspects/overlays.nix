@@ -1,10 +1,16 @@
-{ inputs, ... }: {
+{ inputs, config, ... }: {
+  # Composed overlay of all external nixpkgs overlays used in this flake.
+  # Published so both the NixOS host (via the aspect below) and the standalone
+  # Ubuntu home (in modules/hosts.nix) can share a single source of truth.
+  flake.overlays.default = final: prev:
+    (inputs.claude-code.overlays.default final prev)
+    // (inputs.codex-cli-nix.overlays.default final prev)
+    // (inputs.stt-nix.overlays.default final prev);
+
   den.aspects.overlays = {
     nixos = { pkgs, ... }: {
       nixpkgs.overlays = [
-        inputs.claude-code.overlays.default
-        inputs.codex-cli-nix.overlays.default
-        inputs.stt-nix.overlays.default
+        config.flake.overlays.default
         (final: prev: {
           brev-cli = prev.stdenv.mkDerivation (finalAttrs: {
             pname = "brev-cli";

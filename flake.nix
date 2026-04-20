@@ -26,11 +26,23 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-code.url = "github:sadjow/claude-code-nix";
-    youtube-mcp-server.url = "github:max-miller1204/youtube-mcp-server-nix";
-    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    youtube-mcp-server = {
+      url = "github:max-miller1204/youtube-mcp-server-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    codex-cli-nix = {
+      url = "github:sadjow/codex-cli-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     harnix.url = "github:max-miller1204/harnix";
-    stt-nix.url = "github:max-miller1204/stt-nix";
+    stt-nix = {
+      url = "github:max-miller1204/stt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
